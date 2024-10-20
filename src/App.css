@@ -36,3 +36,15 @@
     transform: rotate(360deg);
   }
 }
+
+.banner-section {
+  background-image: url("../public/img/main_bg.png");
+  background-size: cover;
+  background-position: center;
+}
+
+.product_contain {
+  background-image: url("../public/img/product_bg.png");
+  background-size: cover;
+  background-position: left;
+}
