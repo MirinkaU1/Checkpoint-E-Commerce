@@ -1,115 +1,9 @@
 [
   {
     "id": 1,
-    "name": "iPhone 15 Pro",
-    "description": "Unleash pro power with cutting-edge features and a powerful triple camera system",
-    "views": 243,
-    "colors": [
-      {
-        "name": "Natural Titanium",
-        "code": "#A1A1A1",
-        "image": "/img/iPhone15/iPhone15Pro/iPhone15ProNaturalTitanium.jpg"
-      },
-      {
-        "name": "Gold",
-        "code": "#D9A762",
-        "image": "/img/iPhone15/iPhone15Pro/iPhone15ProGold.jpg"
-      },
-      {
-        "name": "Black",
-        "code": "#000000",
-        "image": "/img/iPhone15/iPhone15Pro/iPhone15ProBlack.jpg"
-      }
-    ],
-    "memoryOptions": ["128GB", "256GB", "512GB", "1TB"],
-    "price": 1199,
-    "stock": "Available",
-    "seller": "iMasterStore"
-  },
-  {
-    "id": 2,
-    "name": "iPhone 15",
-    "description": "The latest innovation with a sleek design and enhanced camera capabilities",
-    "views": 200,
-    "colors": [
-      {
-        "name": "Silver",
-        "code": "#A1A1A1",
-        "image": "/img/iPhone15/iPhone15/iPhone15Silver.jpg"
-      },
-      {
-        "name": "White",
-        "code": "#E9E7E7",
-        "image": "/img/iPhone15/iPhone15/iPhone15White.jpg"
-      },
-      {
-        "name": "Gold",
-        "code": "#FFD700",
-        "image": "/img/iPhone15/iPhone15/iPhone15Gold.jpg"
-      }
-    ],
-    "memoryOptions": ["128GB", "256GB", "512GB"],
-    "price": 999,
-    "stock": "Available",
-    "seller": "iMasterStore"
-  },
-  {
-    "id": 3,
-    "name": "iPhone 14",
-    "image": "/img/iPhone14/iPhone14/iPhone14.png",
-    "description": "Too performance with A16 chip and ProMotion display",
-    "images": ["/images/iphone14plus.png", "/images/iphone14plus-side.png"],
-    "views": 300,
-    "colors": ["#FFFFFF", "#E8E8E8", "#F5A623"],
-    "memoryOptions": ["128GB", "256GB"],
-    "price": 999,
-    "stock": "In stock",
-    "seller": "iMasterStore"
-  },
-  {
-    "id": 4,
-    "name": "iPhone 14 Pro",
-    "image": "/img/iPhone14/iPhone14Pro/iPhone14Pro-VioletIntense.png",
-    "description": "Too performance with A16 chip and ProMotion display",
-    "images": ["/images/iphone14plus.png", "/images/iphone14plus-side.png"],
-    "views": 300,
-    "colors": ["#FFFFFF", "#E8E8E8", "#F5A623"],
-    "memoryOptions": ["128GB", "256GB"],
-    "price": 999,
-    "stock": "In stock",
-    "seller": "iMasterStore"
-  },
-  {
-    "id": 5,
-    "name": "iPhone 14 Pro Max",
-    "image": "/img/iPhone14/iPhone14Pro/iPhone14Pro-NoirSideral.png",
-    "description": "Too performance with A16 chip and ProMotion display",
-    "images": ["/images/iphone14plus.png", "/images/iphone14plus-side.png"],
-    "views": 300,
-    "colors": ["#FFFFFF", "#E8E8E8", "#F5A623"],
-    "memoryOptions": ["128GB", "256GB"],
-    "price": 999,
-    "stock": "In stock",
-    "seller": "iMasterStore"
-  },
-  {
-    "id": 6,
-    "name": "iPhone 14 Mini",
-    "image": "/img/iPhone14/iPhone14/iPhone14-Bleu.png",
-    "description": "Too performance with A16 chip and ProMotion display",
-    "images": ["/images/iphone14plus.png", "/images/iphone14plus-side.png"],
-    "views": 300,
-    "colors": ["#FFFFFF", "#E8E8E8", "#F5A623"],
-    "memoryOptions": ["128GB", "256GB"],
-    "price": 999,
-    "stock": "In stock",
-    "seller": "iMasterStore"
-  },
-  {
-    "id": 7,
     "name": "iPhone 16",
     "description": "Top performance with A16 chip and ProMotion display",
-    "image": "/img/iPhone16/iPhone16/iPhone16-Noir.png",
+    "image": "/img/iPhone16/iPhone16/Noir/iPhone16-Noir.png",
     "views": 300,
     "colors": [
       {
@@ -152,12 +46,13 @@
     ],
     "memoryOptions": ["128GB", "256GB"],
     "price": 999,
-    "stock": "",
+    "stock": "Available",
     "seller": "iMasterStore"
   },
   {
-    "id": 8,
+    "id": 2,
     "name": "iPhone 16 Plus",
+    "image": "/img/iPhone16/iPhone16Plus/iPhone16Plus.png",
     "description": "Top performance with A16 chip and ProMotion display",
     "views": 350,
     "colors": [
@@ -183,29 +78,25 @@
     "seller": "iMasterStore"
   },
   {
-    "id": 9,
+    "id": 2,
     "name": "iPhone 16 Pro",
     "image": "/img/iPhone16/iPhone16Pro/iPhone16Pro.png",
-    "description": "Too performance with A16 chip and ProMotion display",
-    "images": ["/images/iphone14plus.png", "/images/iphone14plus-side.png"],
-    "views": 300,
-    "colors": ["#FFFFFF", "#E8E8E8", "#F5A623"],
+    "description": "Top performance with A16 chip and ProMotion display",
+    "views": 350,
+    "colors": [
+      {
+        "name": "Silver",
+        "code": "#E8E8E8",
+        "image": "/img/iPhone16/iPhone16Plus/iPhone16Plus-Silver.png"
+      },
+      {
+        "name": "Gold",
+        "code": "#F5A623",
+        "image": "/img/iPhone16/iPhone16Plus/iPhone16Plus-Gold.png"
+      }
+    ],
     "memoryOptions": ["128GB", "256GB"],
-    "price": 999,
-    "stock": "In stock",
-    "seller": "iMasterStore"
-  },
-  {
-    "id": 10,
-    "name": "iPhone 16 Pro Max",
-    "image": "/img/iPhone16/iPhone16ProMax/iPhone16ProMax-NoirTitane.png",
-    "description": "Too performance with A16 chip and ProMotion display",
-    "images": ["/images/iphone14plus.png", "/images/iphone14plus-side.png"],
-    "views": 300,
-    "colors": ["#FFFFFF", "#E8E8E8", "#F5A623"],
-    "memoryOptions": ["128GB", "256GB"],
-    "price": 999,
-    "stock": "In stock",
-    "seller": "iMasterStore"
+    "price": 1099,
+    "stock": "In stock"
   }
 ]
