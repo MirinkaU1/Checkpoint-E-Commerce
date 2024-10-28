@@ -20,7 +20,7 @@ const ProductDetail = () => {
       try {
         console.log(`Fetching product with ID: ${productId}`); // Ajoutez ce log pour vérifier l'ID du produit
         const res = await axios.get(
-          `http://localhost:5000/api/products/${productId}`,
+          `${process.env.BACKEND_URL}/api/products/${productId}`,
           {
             headers: {
               "Content-Type": "application/json", // En-tête Content-Type si nécessaire

@@ -13,7 +13,7 @@ const Register = () => {
     e.preventDefault();
     try {
       await axios.post(
-        "http://localhost:5000/api/users/register",
+        `${process.env.BACKEND_URL}/api/users/register`,
         {
           name,
           email,

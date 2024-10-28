@@ -13,7 +13,7 @@ const Breadcrumbs = () => {
       if (productId) {
         try {
           const response = await axios.get(
-            `http://localhost:5000/api/products/${productId}`
+            `${process.env.BACKEND_URL}/api/products/${productId}`
           );
           setProductName(response.data.name);
         } catch (error) {

@@ -13,7 +13,7 @@ const LoginAdmin = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/users/login",
+        `${process.env.BACKEND_URL}/api/users/login`,
         {
           email,
           password,

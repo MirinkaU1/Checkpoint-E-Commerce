@@ -12,12 +12,15 @@ const Products = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/products", {
-          headers: {
-            "Content-Type": "application/json", // En-tête Content-Type si nécessaire
-          },
-          withCredentials: true, // Si le backend utilise les cookies pour la session/authentification
-        });
+        const response = await axios.get(
+          `${process.env.BACKEND_URL}/api/products`,
+          {
+            headers: {
+              "Content-Type": "application/json", // En-tête Content-Type si nécessaire
+            },
+            withCredentials: true, // Si le backend utilise les cookies pour la session/authentification
+          }
+        );
         setProducts(response.data);
         response.data.forEach((product) => console.log(product._id));
       } catch (err) {

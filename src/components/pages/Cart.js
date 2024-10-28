@@ -51,7 +51,7 @@ const Cart = () => {
     try {
       // Enregistrer la commande dans la base de données
       await axios.post(
-        "http://localhost:5000/api/orders",
+        `${process.env.BACKEND_URL}/api/orders`,
         {
           cartItems,
           shippingAddress,
