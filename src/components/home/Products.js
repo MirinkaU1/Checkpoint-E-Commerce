@@ -59,7 +59,7 @@ const Products = () => {
                 {product.description}
               </p>
               <p className="text-lg md:text-2xl font-bold mb-4 text-center border-t pt-4">
-                ${product.price}
+                {product.price} FCFA
               </p>
               <div className="mt-auto">
                 <button
