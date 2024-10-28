@@ -20,7 +20,13 @@ const ProductDetail = () => {
       try {
         console.log(`Fetching product with ID: ${productId}`); // Ajoutez ce log pour vérifier l'ID du produit
         const res = await axios.get(
-          `http://localhost:5000/api/products/${productId}`
+          `http://localhost:5000/api/products/${productId}`,
+          {
+            headers: {
+              "Content-Type": "application/json", // En-tête Content-Type si nécessaire
+            },
+            withCredentials: true, // Si le backend utilise les cookies pour la session/authentification
+          }
         );
         console.log(res.data);
         setProduct(res.data);

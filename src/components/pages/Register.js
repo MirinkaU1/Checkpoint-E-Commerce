@@ -12,11 +12,20 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:5000/api/users/register", {
-        name,
-        email,
-        password,
-      });
+      await axios.post(
+        "http://localhost:5000/api/users/register",
+        {
+          name,
+          email,
+          password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json", // En-tête Content-Type si nécessaire
+          },
+          withCredentials: true, // Si le backend utilise les cookies pour la session/authentification
+        }
+      );
       alert("Inscription réussie ! Vous pouvez maintenant vous connecter.");
       navigate("/login");
     } catch (err) {

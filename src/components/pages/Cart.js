@@ -50,11 +50,20 @@ const Cart = () => {
   const handlePaymentSuccess = async (details, data) => {
     try {
       // Enregistrer la commande dans la base de données
-      await axios.post("http://localhost:5000/api/orders", {
-        cartItems,
-        shippingAddress,
-        paymentDetails: details,
-      });
+      await axios.post(
+        "http://localhost:5000/api/orders",
+        {
+          cartItems,
+          shippingAddress,
+          paymentDetails: details,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json", // En-tête Content-Type si nécessaire
+          },
+          withCredentials: true, // Si le backend utilise les cookies pour la session/authentification
+        }
+      );
 
       // Vider le panier
       setCartItems([]);

@@ -9,7 +9,12 @@ const Products = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/products");
+        const response = await axios.get("http://localhost:5000/api/products", {
+          headers: {
+            "Content-Type": "application/json", // En-tête Content-Type si nécessaire
+          },
+          withCredentials: true, // Si le backend utilise les cookies pour la session/authentification
+        });
         setProducts(response.data);
       } catch (error) {
         console.error("Erreur lors du chargement des produits:", error);
@@ -20,6 +25,7 @@ const Products = () => {
   }, []);
 
   const handleBuyNowClick = (productId) => {
+    console.log("Navigating to product with ID:", productId);
     navigate(`/products/${productId}`);
   };
 
@@ -36,7 +42,7 @@ const Products = () => {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mx-5">
           {products.map((product) => (
             <div
-              key={product.id}
+              key={product._id}
               className="flex flex-col bg-white border rounded-xl h-auto p-4 shadow-md"
             >
               <div className="flex justify-center items-center border-b pb-4 mb-4">
@@ -57,7 +63,7 @@ const Products = () => {
               </p>
               <div className="mt-auto">
                 <button
-                  onClick={() => handleBuyNowClick(product.id)}
+                  onClick={() => handleBuyNowClick(product._id)}
                   className="bg-orange text-sm md:text-xl text-white px-4 py-2 w-full rounded-xl hover:bg-orange-600"
                 >
                   Buy now

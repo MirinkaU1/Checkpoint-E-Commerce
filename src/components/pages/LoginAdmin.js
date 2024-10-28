@@ -17,6 +17,12 @@ const LoginAdmin = () => {
         {
           email,
           password,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json", // En-tête Content-Type si nécessaire
+          },
+          withCredentials: true, // Si le backend utilise les cookies pour la session/authentification
         }
       );
       const { token } = response.data;
