@@ -1,70 +1,69 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import products from "../data/products.json"; // Assure-toi que le chemin est correct.
 
-const ProductList = ({ searchTerm, filter }) => {
+const ProductList = ({ products = [] }) => {
   const [currentPage, setCurrentPage] = useState(1);
-  const productsPerPage = 9; // Limite à 3 produits par page
+  const productsPerPage = 8;
   const navigate = useNavigate();
-
-  const filteredProducts = products.filter((product) =>
-    product.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = filteredProducts.slice(
+  const currentProducts = products.slice(
     indexOfFirstProduct,
     indexOfLastProduct
   );
 
-  const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
+  const totalPages = Math.ceil(products.length / productsPerPage);
 
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const handleBuyNowClick = (productId) => {
+    console.log("Navigating to product with ID:", productId);
     navigate(`/products/${productId}`);
   };
 
   return (
-    <div className="mx-20 py-8">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="mx-5 lg:mx-20 py-8">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {currentProducts.map((product) => (
           <div
-            key={product.id}
-            className="flex flex-col bg-white border rounded-2xl h-auto p-6 shadow-md"
+            key={product._id}
+            className="flex flex-col bg-white border rounded-2xl w-auto h-auto p-4 md:p-6 shadow-md"
           >
-            <img
-              src={product.image}
-              alt={product.name}
-              className="w-auto h-96 -mt-16 -mb-10"
-            />
-            <h3 className="text-xl font-bold">{product.name}</h3>
-            <p className="text-gray-600 text-Poppins text-base mb-2">
-              {product.description}
+            <div className="flex justify-center items-center pb-4 mb-4">
+              <img
+                src={product.image}
+                alt={product.name}
+                className="w-auto h-32 md:h-48 object-contain"
+              />
+            </div>
+            <h3 className="text-lg md:text-xl font-bold">{product.name}</h3>
+            <p className="text-lg md:text-2xl font-bold mt-auto mb-4 pt-4">
+              {product.price} FCFA
             </p>
-            <p className="text-2xl font-bold mb-4">${product.price}</p>
             <div className="mt-auto">
-              <button
-                onClick={() => handleBuyNowClick(product.id)}
-                className="bg-orange text-xl text-white px-4 py-2 w-full rounded-xl hover:bg-orange-600"
-              >
-                Buy now
-              </button>
+              {product ? (
+                <button
+                  onClick={() => handleBuyNowClick(product._id)}
+                  className="bg-orange text-sm md:text-xl text-white px-4 py-2 w-full rounded-xl hover:bg-orange-600"
+                >
+                  Buy now
+                </button>
+              ) : (
+                <p>Chargement du produit...</p>
+              )}
             </div>
           </div>
         ))}
       </div>
-      <div className="flex justify-center mt-6">
+      <div className="flex justify-center mt-8">
         {Array.from({ length: totalPages }, (_, index) => (
           <button
             key={index + 1}
             onClick={() => paginate(index + 1)}
-            className={`px-4 py-2 rounded-full mx-1 ${
-              currentPage === index + 1
-                ? "bg-bleu text-white hover:bg-blue-700"
-                : "bg-white border border-bleu hover:bg-gray-200"
-            } rounded`}
+            className={`mx-1 px-3 py-1 rounded ${
+              currentPage === index + 1 ? "bg-orange text-white" : "bg-gray-200"
+            }`}
           >
             {index + 1}
           </button>

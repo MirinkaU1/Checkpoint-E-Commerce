@@ -46,5 +46,5 @@
 .product_contain {
   background-image: url("../public/img/product_bg.png");
   background-size: cover;
-  background-position: left;
+  background-position: center;
 }

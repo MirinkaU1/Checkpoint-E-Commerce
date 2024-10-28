@@ -1,22 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import ProductList from "../ProductList";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
 
 const Products = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [filter, setFilter] = useState(false);
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/products");
+        setProducts(response.data);
+        response.data.forEach((product) => console.log(product._id));
+      } catch (err) {
+        console.error("Erreur lors du chargement des produits:", err);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   const handleFilterClick = () => {
     setFilter(!filter);
   };
 
   return (
-    <section className="relative flex flex-col w-full">
-      <div className="bg-blue-600 text-white flex gap-4 items-center mt-[5rem]">
+    <section className="relative flex flex-col min-h-screen w-full">
+      <div className="bg-blue-600 text-white flex gap-4 items-center justify-around px-3 mt-20">
         <button
           onClick={handleFilterClick}
-          className="flex gap-4 ml-4 my-4 p-2 text-white rounded-full"
+          className="flex gap-4 my-4 p-2 text-white rounded-full"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -48,8 +64,12 @@ const Products = () => {
           />
         </div>
       </div>
-      <div className="product_contain mx-auto px-4 py-8">
-        <ProductList searchTerm={searchTerm} filter={filter} />
+      <div className="product_contain">
+        <ProductList
+          searchTerm={searchTerm}
+          filter={filter}
+          products={products}
+        />
       </div>
     </section>
   );

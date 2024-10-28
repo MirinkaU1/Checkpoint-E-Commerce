@@ -5,7 +5,7 @@ import ContactForm from "../ContactForm";
 
 const About = () => {
   return (
-    <div className="mx-20 py-8 my-[5rem]">
+    <div className="mx-10 lg:mx-20 py-20">
       {/* Header */}
       <header className="mb-10">
         <h1 className="text-4xl font-bold">About Us</h1>

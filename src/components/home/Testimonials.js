@@ -24,7 +24,7 @@ const Testimonials = () => {
 
   return (
     <section className="bg-gradient-to-b from-bleu via-bleu to-blue-900 w-full py-16">
-      <div className="mx-20 text-center">
+      <div className="mx-10 lg:mx-20 text-center">
         <h2
           id="reviews"
           className="text-3xl text-left text-white font-bold mb-8"

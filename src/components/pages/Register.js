@@ -1,16 +1,28 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const Register = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false); // État pour gérer la visibilité du mot de passe
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Logique d'inscription ici (envoi de données à l'API)
-    console.log("Register:", { name, email, password });
+    try {
+      await axios.post("http://localhost:5000/api/users/register", {
+        name,
+        email,
+        password,
+      });
+      alert("Inscription réussie ! Vous pouvez maintenant vous connecter.");
+      navigate("/login");
+    } catch (err) {
+      console.error("Erreur lors de l'inscription:", err);
+      alert("Erreur lors de l'inscription. Veuillez réessayer.");
+    }
   };
 
   const handleBackClick = () => {
@@ -18,15 +30,15 @@ const Register = () => {
   };
 
   return (
-    <div className="flex flex-row items-center w-full h-screen">
-      <div className="w-1/2 h-full">
+    <div className="flex flex-col md:flex-row items-center w-full h-screen">
+      <div className="hidden md:block w-1/2 h-full">
         <img
           src="/img/product_bg2.png"
           alt="Product Background"
           className="w-full h-full object-cover"
         />
       </div>
-      <div className="flex flex-col items-center justify-center w-1/2 h-full bg-bleu p-8">
+      <div className="flex flex-col items-center justify-center w-full md:w-1/2 h-full bg-bleu p-8">
         <img src="/img/logo-white.png" alt="Logo" className="w-20 mb-5" />
         <h2 className="text-2xl font-bold mb-6 text-white text-center">
           Register
@@ -52,15 +64,22 @@ const Register = () => {
               className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
-          <div className="mb-4">
+          <div className="mb-4 relative">
             <label className="block text-white mb-2">Password:</label>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"} // Basculer le type d'entrée
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               required
               className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)} // Basculer la visibilité du mot de passe
+              className="absolute right-2 top-2 text-blue-500"
+            >
+              {showPassword ? "Hide" : "Show"}
+            </button>
           </div>
           <button
             type="submit"

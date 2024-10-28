@@ -4,6 +4,7 @@ import {
   Routes,
   Route,
   useLocation,
+  Navigate,
 } from "react-router-dom";
 import "./App.css";
 import Home from "./components/pages/Home";
@@ -14,6 +15,10 @@ import Register from "./components/pages/Register";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import ProductDetails from "./components/pages/ProductDetails";
+import Admin from "./components/pages/Admin";
+import LoginAdmin from "./components/pages/LoginAdmin";
+import Cart from "./components/pages/Cart";
+import NotFound from "./components/pages/NotFound"; // Importer le composant NotFound
 
 function App() {
   return (
@@ -26,9 +31,16 @@ function App() {
 const AppContent = () => {
   const location = useLocation();
   const hideNavBar =
-    location.pathname === "/login" || location.pathname === "/register";
+    location.pathname === "/login" ||
+    location.pathname === "/register" ||
+    location.pathname === "/login-admin";
   const hideFooter =
-    location.pathname === "/login" || location.pathname === "/register";
+    location.pathname === "/login" ||
+    location.pathname === "/register" ||
+    location.pathname === "/login-admin";
+
+  const isAuthenticated = !!localStorage.getItem("token");
+  const isAdmin = localStorage.getItem("isAdmin") === "true"; // Vérifiez si l'utilisateur est un administrateur
 
   return (
     <>
@@ -38,8 +50,23 @@ const AppContent = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/products" element={<Products />} />
-        <Route path="/products/:productId" element={<ProductDetails />} />
+        <Route path="/products/:productId" element={<ProductDetails />} />{" "}
+        {/* Assurez-vous que le paramètre est 'productId' */}
         <Route path="/about" element={<About />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/login-admin" element={<LoginAdmin />} />
+        <Route path="/404" element={<NotFound />} />
+        <Route
+          path="/admin"
+          element={
+            isAuthenticated && isAdmin ? (
+              <Admin />
+            ) : (
+              <Navigate to="/login-admin" />
+            )
+          }
+        />
+        <Route path="*" element={<Navigate to="/404" />} />
       </Routes>
       {!hideFooter && <Footer />}
     </>

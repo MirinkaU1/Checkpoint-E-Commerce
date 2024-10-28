@@ -3,7 +3,7 @@ import React from "react";
 const Advantages = () => {
   return (
     <section className="bg-white w-full text-center text-bleu py-16">
-      <div className="mx-20">
+      <div className="mx-10 lg:mx-20">
         <h2 className="text-3xl font-bold mb-3 text-left">Why Choose Us?</h2>
         <p className="mb-8 text-left">
           Your trusted partner for the latest iPhones, with benefits you can

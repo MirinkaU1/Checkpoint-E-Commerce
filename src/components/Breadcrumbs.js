@@ -1,22 +1,37 @@
-import React from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
-import products from "../data/products.json"; // Assurez-vous que le chemin est correct
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import axios from "axios";
 
 const Breadcrumbs = () => {
   const location = useLocation();
-  const { productId } = useParams();
   const pathnames = location.pathname.split("/").filter((x) => x);
+  const [productName, setProductName] = useState(null);
 
-  // Mapping des chemins vers des noms lisibles
+  useEffect(() => {
+    const fetchProductName = async () => {
+      const productId = pathnames[pathnames.length - 1];
+      if (productId) {
+        try {
+          const response = await axios.get(
+            `http://localhost:5000/api/products/${productId}`
+          );
+          setProductName(response.data.name);
+        } catch (error) {
+          console.error(
+            "Erreur lors de la récupération du nom du produit:",
+            error
+          );
+        }
+      }
+    };
+
+    fetchProductName();
+  }, [pathnames]);
+
   const routeNames = {
     products: "Products",
-    "product-details": "Details",
+    // Ajoutez d'autres noms de routes si nécessaire
   };
-
-  // Trouver le nom du produit si l'ID du produit est présent dans l'URL
-  const productName = productId
-    ? products.find((p) => p.id === parseInt(productId))?.name
-    : null;
 
   return (
     <div className="breadcrumbs text-sm mb-4">
