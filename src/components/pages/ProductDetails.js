@@ -2,36 +2,32 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import Breadcrumbs from "../Breadcrumbs";
+import { toast } from "react-toastify";
 
-const ProductDetail = ({ Product }) => {
-  const { productId } = useParams(); // Utilisez 'productId' pour correspondre au nom du paramètre défini dans la route
-  console.log("Product ID from URL:", productId);
+const ProductDetail = () => {
+  const { productId } = useParams();
   const [product, setProduct] = useState(null);
-  const [selectedColor, setSelectedColor] = useState(null);
+  const [selectedColor, setSelectedColor] = useState("");
+  const [selectedMemory, setSelectedMemory] = useState("");
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   useEffect(() => {
     const fetchProduct = async () => {
       if (!productId) {
-        console.error("Product ID is undefined");
+        console.error("ID du produit non défini");
         return;
       }
 
       try {
-        console.log(`Fetching product with ID: ${productId}`); // Ajoutez ce log pour vérifier l'ID du produit
         const res = await axios.get(
-          `https://imarketstore-backend.onrender.com/api/products/${productId}`,
-          {
-            headers: {
-              "Content-Type": "application/json", // En-tête Content-Type si nécessaire
-            },
-            withCredentials: true, // Si le backend utilise les cookies pour la session/authentification
-          }
+          `https://imarketstore-backend.onrender.com/api/products/${productId}`
         );
-        console.log(res.data);
         setProduct(res.data);
         if (res.data && res.data.colors.length > 0) {
-          setSelectedColor(res.data.colors[0]);
+          setSelectedColor(res.data.colors[0].name);
+        }
+        if (res.data && res.data.memoryOptions.length > 0) {
+          setSelectedMemory(res.data.memoryOptions[0]);
         }
       } catch (err) {
         console.error("Erreur lors du chargement du produit:", err);
@@ -42,8 +38,12 @@ const ProductDetail = ({ Product }) => {
   }, [productId]);
 
   const handleColorChange = (color) => {
-    setSelectedColor(color);
-    setCurrentImageIndex(0); // Reset the image index when the color changes
+    setSelectedColor(color.name);
+    setCurrentImageIndex(0);
+  };
+
+  const handleMemoryChange = (memory) => {
+    setSelectedMemory(memory);
   };
 
   const handlePrevImage = () => {
@@ -56,6 +56,35 @@ const ProductDetail = ({ Product }) => {
     setCurrentImageIndex((prevIndex) =>
       prevIndex === selectedColor.image.length - 1 ? 0 : prevIndex + 1
     );
+  };
+
+  const addToCart = () => {
+    let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+    const newItem = {
+      productId: product.id,
+      name: product.name,
+      price: product.price,
+      color: selectedColor,
+      memory: selectedMemory,
+      quantity: 1,
+    };
+
+    const existingProductIndex = cart.findIndex(
+      (item) =>
+        item.productId === newItem.productId &&
+        item.color === newItem.color &&
+        item.memory === newItem.memory
+    );
+
+    if (existingProductIndex !== -1) {
+      cart[existingProductIndex].quantity += 1;
+    } else {
+      cart.push(newItem);
+    }
+
+    localStorage.setItem("cart", JSON.stringify(cart));
+    toast.success("Produit ajouté au panier !");
   };
 
   if (!product) {
@@ -170,75 +199,84 @@ const ProductDetail = ({ Product }) => {
         <div className="md:w-1/2">
           {/* Section Options du produit */}
           <div className="mb-8">
-            <h2 className="text-lg font-semibold">
-              Color:{" "}
-              <span className="font-normal">
-                {selectedColor ? selectedColor.name : "N/A"}
-              </span>
-            </h2>
-            <div className="flex space-x-4 mb-4">
-              {product.colors.map((color, index) => (
-                <button
-                  key={index}
-                  onClick={() => handleColorChange(color)}
-                  className={`p-4 border rounded-full ${
-                    selectedColor && selectedColor.code === color.code
-                      ? "border-blue-500"
-                      : ""
-                  }`}
-                  style={{ backgroundColor: color.code }}
-                ></button>
-              ))}
-            </div>
-
-            <h2 className="text-lg font-semibold">Storage:</h2>
-            <div className="flex space-x-4">
-              {product.memoryOptions.map((storage, index) => (
-                <button
-                  key={index}
-                  className="px-4 py-2 border rounded-2xl focus:border-bleu focus:text-bleu"
-                >
-                  {storage}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Section Prix et Actions */}
-          <div className="mb-8">
-            <h2 className="text-3xl font-bold text-gray-800">
-              {product.price} FCFA
-            </h2>
-            <p
-              className={
-                product.stock === "Available"
-                  ? "text-green-500"
-                  : "text-red-500"
-              }
-            >
-              {product.stock === "Available"
-                ? "Available in stock"
-                : "Out of stock"}
-            </p>
-            {product.stock === "Available" ? (
-              <div className="mt-4">
-                <button className="bg-orange text-white px-6 py-4 rounded-2xl">
-                  Buy
-                </button>
+            {/* Sélection de la couleur */}
+            <div className="mb-4">
+              <h3 className="text-lg font-semibold">Couleur :</h3>
+              <div className="flex">
+                {product.colors.map((color) => (
+                  <button
+                    key={color.name}
+                    onClick={() => handleColorChange(color)}
+                    className={`p-2 m-1 border ${
+                      selectedColor === color.name
+                        ? "border-black"
+                        : "border-gray-300"
+                    }`}
+                    style={{ backgroundColor: color.code }}
+                  ></button>
+                ))}
               </div>
-            ) : (
-              <button
-                className="bg-slate-200 text-slate-800 w-full px-6 py-4 my-4 rounded-2xl"
-                disabled
+            </div>
+
+            {/* Sélection de la mémoire */}
+            <div className="mb-4">
+              <h3 className="text-lg font-semibold">Mémoire :</h3>
+              <div className="flex">
+                {product.memoryOptions.map((memory) => (
+                  <button
+                    key={memory}
+                    onClick={() => handleMemoryChange(memory)}
+                    className={`p-2 m-1 border ${
+                      selectedMemory === memory
+                        ? "border-black"
+                        : "border-gray-300"
+                    }`}
+                  >
+                    {memory}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Section Prix et Actions */}
+            <div className="mb-8">
+              <h2 className="text-3xl font-bold text-gray-800">
+                {product.price} FCFA
+              </h2>
+              <p
+                className={
+                  product.stock === "Available"
+                    ? "text-green-500"
+                    : "text-red-500"
+                }
               >
-                Buy
-              </button>
-            )}
+                {product.stock === "Available"
+                  ? "Available in stock"
+                  : "Out of stock"}
+              </p>
+              {product.stock === "Available" ? (
+                <div className="mt-4">
+                  <button
+                    onClick={addToCart}
+                    className="bg-orange text-white px-6 py-4 rounded-2xl"
+                  >
+                    Buy
+                  </button>
+                </div>
+              ) : (
+                <button
+                  className="bg-slate-200 text-slate-800 w-full px-6 py-4 my-4 rounded-2xl"
+                  disabled
+                >
+                  Add to Cart
+                </button>
+              )}
+            </div>
           </div>
         </div>
+        <h2>Description</h2>
+        <p>{product.description}</p>
       </div>
-      <h2>Description</h2>
-      <p>{product.description}</p>
     </div>
   );
 };

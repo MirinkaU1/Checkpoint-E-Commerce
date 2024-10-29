@@ -19,6 +19,8 @@ import Admin from "./components/pages/Admin";
 import LoginAdmin from "./components/pages/LoginAdmin";
 import Cart from "./components/pages/Cart";
 import NotFound from "./components/pages/NotFound";
+import Checkout from "./components/pages/Checkout";
+import Success from "./components/pages/Success";
 
 function App() {
   return (
@@ -53,6 +55,8 @@ const AppContent = () => {
         <Route path="/products/:productId" element={<ProductDetails />} />
         <Route path="/about" element={<About />} />
         <Route path="/cart" element={<Cart />} />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/success" element={<Success />} />
         <Route path="/login-admin" element={<LoginAdmin />} />
         <Route path="/404" element={<NotFound />} />
         <Route
