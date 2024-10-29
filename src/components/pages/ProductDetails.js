@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import Breadcrumbs from "../Breadcrumbs";
 
-const ProductDetail = () => {
+const ProductDetail = ({ Product }) => {
   const { productId } = useParams(); // Utilisez 'productId' pour correspondre au nom du paramètre défini dans la route
   console.log("Product ID from URL:", productId);
   const [product, setProduct] = useState(null);
@@ -76,8 +76,12 @@ const ProductDetail = () => {
   }
 
   return (
-    <div className="pt-20 p-4">
+    <div className="pt-20 p-10">
       <Breadcrumbs />
+      {/* Section En-tête du produit */}
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold">{product.name}</h1>
+      </div>
       <div className="flex flex-col md:flex-row gap-5">
         {/* Section Galerie d'images */}
         <div className="flex flex-col items-center md:w-1/2">
@@ -141,7 +145,7 @@ const ProductDetail = () => {
                 </>
               )}
           </div>
-          <div className="flex gap-4">
+          <div className="flex gap-4 overflow-x-auto">
             {/* Miniatures */}
             {selectedColor &&
             selectedColor.image &&
@@ -163,12 +167,7 @@ const ProductDetail = () => {
           </div>
         </div>
 
-        <div className="md:w-1/2 p-9">
-          {/* Section En-tête du produit */}
-          <div className="mb-8">
-            <h1 className="text-3xl font-bold">{product.name}</h1>
-          </div>
-
+        <div className="md:w-1/2">
           {/* Section Options du produit */}
           <div className="mb-8">
             <h2 className="text-lg font-semibold">
@@ -195,7 +194,10 @@ const ProductDetail = () => {
             <h2 className="text-lg font-semibold">Storage:</h2>
             <div className="flex space-x-4">
               {product.memoryOptions.map((storage, index) => (
-                <button key={index} className="px-4 py-2 border rounded-2xl">
+                <button
+                  key={index}
+                  className="px-4 py-2 border rounded-2xl focus:border-bleu focus:text-bleu"
+                >
                   {storage}
                 </button>
               ))}

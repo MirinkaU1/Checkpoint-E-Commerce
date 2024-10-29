@@ -18,7 +18,7 @@ import ProductDetails from "./components/pages/ProductDetails";
 import Admin from "./components/pages/Admin";
 import LoginAdmin from "./components/pages/LoginAdmin";
 import Cart from "./components/pages/Cart";
-import NotFound from "./components/pages/NotFound"; // Importer le composant NotFound
+import NotFound from "./components/pages/NotFound";
 
 function App() {
   return (
@@ -50,8 +50,7 @@ const AppContent = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/products" element={<Products />} />
-        <Route path="/products/:productId" element={<ProductDetails />} />{" "}
-        {/* Assurez-vous que le paramètre est 'productId' */}
+        <Route path="/products/:productId" element={<ProductDetails />} />
         <Route path="/about" element={<About />} />
         <Route path="/cart" element={<Cart />} />
         <Route path="/login-admin" element={<LoginAdmin />} />

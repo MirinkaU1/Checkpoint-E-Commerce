@@ -42,7 +42,7 @@ const Products = () => {
           Upgrade to the latest technology at unbeatable prices. Choose your
           favorite model and enjoy the best features Apple has to offer
         </p>
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mx-5">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {products.map((product) => (
             <div
               key={product._id}
