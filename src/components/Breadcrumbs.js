@@ -13,7 +13,7 @@ const Breadcrumbs = () => {
       if (productId) {
         try {
           const response = await axios.get(
-            `https://imarketstore-backend.onrender.com/api/products/${productId}`
+            `${process.env.REACT_APP_BACKEND_URL}/api/products/${productId}`
           );
           setProductName(response.data.name);
         } catch (error) {

@@ -20,7 +20,7 @@ const ProductDetail = () => {
 
       try {
         const res = await axios.get(
-          `https://imarketstore-backend.onrender.com/api/products/${productId}`
+          `${process.env.REACT_APP_BACKEND_URL}/api/products/${productId}`
         );
         setProduct(res.data);
         if (res.data && res.data.colors.length > 0) {

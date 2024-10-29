@@ -13,7 +13,7 @@ const Products = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          `https://imarketstore-backend.onrender.com/api/products`,
+          `${process.env.REACT_APP_BACKEND_URL}/api/products`,
           {
             headers: {
               "Content-Type": "application/json", // En-tête Content-Type si nécessaire
