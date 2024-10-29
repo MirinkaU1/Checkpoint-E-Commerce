@@ -12,7 +12,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}/api/users/login`,
+        `https://imarketstore-backend.onrender.com/api/users/login`,
         {
           email,
           password,

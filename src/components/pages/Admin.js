@@ -40,7 +40,7 @@ const Admin = () => {
   const fetchProducts = async () => {
     try {
       const response = await axios.get(
-        `${process.env.REACT_APP_BACKEND_URL}/api/products`
+        `https://imarketstore-backend.onrender.com/api/products`
       );
       setProducts(response.data);
     } catch (error) {

@@ -13,7 +13,7 @@ const Register = () => {
     e.preventDefault();
     try {
       await axios.post(
-        `${process.env.REACT_APP_BACKEND_URL}/api/users/register`,
+        `https://imarketstore-backend.onrender.com/api/users/register`,
         {
           name,
           email,
