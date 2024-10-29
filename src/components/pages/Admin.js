@@ -40,7 +40,7 @@ const Admin = () => {
   const fetchProducts = async () => {
     try {
       const response = await axios.get(
-        `${process.env.BACKEND_URL}/api/products`
+        `https://imarketstore-backend.onrender.com/api/products`
       );
       setProducts(response.data);
     } catch (error) {
@@ -143,7 +143,7 @@ const Admin = () => {
     try {
       if (editingProductId) {
         await axios.put(
-          `http://localhost:5000/api/products/${editingProductId}`,
+          `https://imarketstore-backend.onrender.com/api/products/${editingProductId}`,
           productForm,
           {
             headers: {
@@ -152,11 +152,15 @@ const Admin = () => {
           }
         );
       } else {
-        await axios.post("http://localhost:5000/api/products", productForm, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        await axios.post(
+          "https://imarketstore-backend.onrender.com/api/products",
+          productForm,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
       }
       fetchProducts();
       resetForm();
@@ -176,11 +180,14 @@ const Admin = () => {
   const handleDeleteProduct = async (productId) => {
     const token = localStorage.getItem("token");
     try {
-      await axios.delete(`http://localhost:5000/api/products/${productId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      await axios.delete(
+        `https://imarketstore-backend.onrender.com/api/products/${productId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       fetchProducts();
     } catch (error) {
       console.error("Erreur lors de la suppression du produit", error);

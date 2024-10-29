@@ -51,7 +51,7 @@ const Cart = () => {
     try {
       // Enregistrer la commande dans la base de données
       await axios.post(
-        `${process.env.BACKEND_URL}/api/orders`,
+        `https://imarketstore-backend.onrender.com/api/orders`,
         {
           cartItems,
           shippingAddress,
