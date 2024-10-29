@@ -48,7 +48,7 @@ const Products = () => {
               key={product._id}
               className="flex flex-col bg-white border rounded-xl h-auto p-4 shadow-md"
             >
-              <div className="flex justify-center items-center border-b pb-4 mb-4">
+              <div className="flex justify-center items-center pb-4 mb-4">
                 <img
                   src={product.image}
                   alt={product.name}
@@ -58,10 +58,7 @@ const Products = () => {
               <h3 className="text-lg md:text-xl font-bold text-center">
                 {product.name}
               </h3>
-              <p className="text-gray-600 text-Poppins text-sm md:text-base mb-2 text-center">
-                {product.description}
-              </p>
-              <p className="text-lg md:text-2xl font-bold mb-4 text-center border-t pt-4">
+              <p className="text-lg md:text-2xl font-bold mb-4 text-center pt-4">
                 {product.price} FCFA
               </p>
               <div className="mt-auto">

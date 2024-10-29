@@ -167,9 +167,6 @@ const ProductDetail = () => {
           {/* Section En-tête du produit */}
           <div className="mb-8">
             <h1 className="text-3xl font-bold">{product.name}</h1>
-            <p className="text-gray-500">
-              Reference: {product.id} | {product.views} views
-            </p>
           </div>
 
           {/* Section Options du produit */}
@@ -208,7 +205,7 @@ const ProductDetail = () => {
           {/* Section Prix et Actions */}
           <div className="mb-8">
             <h2 className="text-3xl font-bold text-gray-800">
-              ${product.price}
+              {product.price} FCFA
             </h2>
             <p
               className={
@@ -238,6 +235,8 @@ const ProductDetail = () => {
           </div>
         </div>
       </div>
+      <h2>Description</h2>
+      <p>{product.description}</p>
     </div>
   );
 };
