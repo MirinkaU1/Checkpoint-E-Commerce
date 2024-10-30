@@ -205,10 +205,8 @@ const ProductDetail = () => {
                   <button
                     key={color.name}
                     onClick={() => handleColorChange(color)}
-                    className={`p-4 m-1 border border-white focus:border-bleu rounded-full ${
-                      selectedColor === color
-                        ? "border-black"
-                        : "border-gray-300"
+                    className={`p-4 m-1 border rounded-full ${
+                      selectedColor === color ? "border-bleu" : "border-white"
                     }`}
                     style={{ backgroundColor: color.code }}
                   ></button>
@@ -224,13 +222,13 @@ const ProductDetail = () => {
                   <button
                     key={memory}
                     onClick={() => handleMemoryChange(memory)}
-                    className={`p-2 m-1 border focus:border-bleu focus:text-bleu rounded-2xl ${
+                    className={`p-2 m-1 border rounded-2xl ${
                       selectedMemory === memory
-                        ? "border-black"
-                        : "border-gray-300"
+                        ? "border-bleu text-bleu"
+                        : "border-black"
                     }`}
                   >
-                    {memory}
+                    {memory} Gb
                   </button>
                 ))}
               </div>
