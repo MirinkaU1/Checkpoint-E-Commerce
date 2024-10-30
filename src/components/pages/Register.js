@@ -27,7 +27,7 @@ const Register = () => {
         }
       );
       alert("Inscription réussie ! Vous pouvez maintenant vous connecter.");
-      navigate("/login");
+      navigate("/login", { replace: true });
     } catch (err) {
       console.error("Erreur lors de l'inscription:", err);
       alert("Erreur lors de l'inscription. Veuillez réessayer.");

@@ -1,12 +1,9 @@
 import React from "react";
 import "../../App.css";
+import { Link } from "react-router-dom";
 // import Navbar from "../Navbar";
 
 const Banner = () => {
-  const navigate = () => {
-    window.location.href = "/products";
-  };
-
   return (
     <section className="banner-section relative flex flex-col w-full h-lvh pt-20 lg:h-dvh justify-center">
       {/* <Navbar /> */}
@@ -17,12 +14,11 @@ const Banner = () => {
             <br />
             Des offres imbattables vous attendent.
           </h1>
-          <button
-            onClick={navigate}
-            className="bg-orange text-white text-xl py-3 px-4 rounded-lg"
-          >
-            Découvrez nos offres
-          </button>
+          <Link to="/products">
+            <button className="bg-orange text-white text-xl py-3 px-4 rounded-lg">
+              Découvrez nos offres
+            </button>
+          </Link>
         </div>
         <div className="lg:w-1/2 mt-20 lg:mt-24 lg:mb-10 flex justify-center">
           <img
