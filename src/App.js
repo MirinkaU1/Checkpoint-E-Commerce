@@ -21,11 +21,14 @@ import Cart from "./components/pages/Cart";
 import NotFound from "./components/pages/NotFound";
 import Checkout from "./components/pages/Checkout";
 import Success from "./components/pages/Success";
+import { CartProvider } from "./components/context/CartContext";
 
 function App() {
   return (
     <Router>
-      <AppContent />
+      <CartProvider>
+        <AppContent />
+      </CartProvider>
     </Router>
   );
 }

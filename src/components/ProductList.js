@@ -47,7 +47,7 @@ const ProductList = ({ products = [] }) => {
                   onClick={() => handleBuyNowClick(product._id)}
                   className="bg-orange text-sm md:text-xl text-white px-4 py-2 w-full rounded-xl hover:bg-orange-600"
                 >
-                  Buy now
+                  Acheter
                 </button>
               ) : (
                 <p>Chargement du produit...</p>

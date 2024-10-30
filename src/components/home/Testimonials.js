@@ -29,7 +29,7 @@ const Testimonials = () => {
           id="reviews"
           className="text-3xl text-left text-white font-bold mb-8"
         >
-          What our customers say about us
+          Ce que nos clients disent de nous
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {testimonials.map((testimonial, index) => {

@@ -3,11 +3,13 @@ import ProductList from "../ProductList";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Products = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [filter, setFilter] = useState(false);
+  // const [filter, setFilter] = useState(false);
   const [products, setProducts] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -31,14 +33,14 @@ const Products = () => {
     fetchProducts();
   }, []);
 
-  const handleFilterClick = () => {
-    setFilter(!filter);
-  };
+  // const handleFilterClick = () => {
+  //   setFilter(!filter);
+  // };
 
   return (
     <section className="relative flex flex-col min-h-screen w-full">
-      <div className="bg-blue-600 text-white flex gap-4 items-center justify-around px-3 mt-20">
-        <button
+      <div className="bg-blue-600 text-white flex gap-2 items-center justify-around px-3 mt-20">
+        {/* <button
           onClick={handleFilterClick}
           className="flex gap-4 my-4 p-2 text-white rounded-full"
         >
@@ -57,6 +59,23 @@ const Products = () => {
             />
           </svg>
           <span>Filtrer</span>
+        </button> */}
+        <button
+          onClick={() => navigate(-1)}
+          className="px-4 py-2 text-white flex items-center"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            class="size-6"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M7.72 12.53a.75.75 0 0 1 0-1.06l7.5-7.5a.75.75 0 1 1 1.06 1.06L9.31 12l6.97 6.97a.75.75 0 1 1-1.06 1.06l-7.5-7.5Z"
+              clip-rule="evenodd"
+            />
+          </svg>
         </button>
         <div className="relative w-4/5">
           <FontAwesomeIcon
@@ -75,7 +94,7 @@ const Products = () => {
       <div className="product_contain">
         <ProductList
           searchTerm={searchTerm}
-          filter={filter}
+          // filter={filter}
           products={products}
         />
       </div>

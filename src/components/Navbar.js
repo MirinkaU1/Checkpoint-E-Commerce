@@ -1,37 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import { Dialog, DialogPanel } from "@headlessui/react";
+import { Dialog } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { Menu, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import { UserCircleIcon } from "@heroicons/react/24/solid";
+import { CartContext } from "./context/CartContext";
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(
     !!localStorage.getItem("token")
   );
-  const [cartItemsCount, setCartItemsCount] = useState(0);
+
+  const { cartItemsCount } = useContext(CartContext);
 
   const navigate = useNavigate();
   const location = useLocation();
-
-  useEffect(() => {
-    const cart = JSON.parse(localStorage.getItem("cart")) || [];
-    const count = cart.reduce((total, item) => total + item.quantity, 0);
-    setCartItemsCount(count);
-  }, []);
-
-  useEffect(() => {
-    const handleStorageChange = () => {
-      const cart = JSON.parse(localStorage.getItem("cart")) || [];
-      const count = cart.reduce((total, item) => total + item.quantity, 0);
-      setCartItemsCount(count);
-    };
-
-    window.addEventListener("storage", handleStorageChange);
-    return () => window.removeEventListener("storage", handleStorageChange);
-  }, []);
 
   const handleLogout = () => {
     const currentPath = location.pathname;
@@ -50,13 +35,13 @@ export default function Navbar() {
     <header className="bg-transparent absolute z-10 w-full">
       <nav
         aria-label="Global"
-        className="flex items-center justify-between py-6 mx-10 lg:mx-20"
+        className="flex items-center justify-between py-6 mx-6 lg:mx-20"
       >
         <div className="flex lg:flex-1">
           <Link to="/" className="flex gap-3 items-center -m-1.5 p-1.5">
-            <span className="sr-only">Your Company</span>
+            <span className="sr-only">Votre entreprise</span>
             <img alt="" src="/img/logo.png" className="h-8 w-auto" />
-            <span>iMasterStore</span>
+            <span className="text-2xl font-bold text-bleu">iMasterStore</span>
           </Link>
         </div>
 
@@ -85,7 +70,7 @@ export default function Navbar() {
             onClick={() => setMobileMenuOpen(true)}
             className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
           >
-            <span className="sr-only">Open main menu</span>
+            <span className="sr-only">Ouvrir le menu principal</span>
             <Bars3Icon aria-hidden="true" className="h-6 w-6" />
           </button>
         </div>
@@ -94,23 +79,23 @@ export default function Navbar() {
             to="/"
             className="text-sm font-semibold leading-6 text-gray-900"
           >
-            Home
+            Accueil
           </Link>
           <Link
             to="/products"
             className="text-sm font-semibold leading-6 text-gray-900"
           >
-            Products
+            Produits
           </Link>
           <Link
             to="/about"
             className="text-sm font-semibold leading-6 text-gray-900"
           >
-            About
+            À propos
           </Link>
           <Link
             to="/cart"
-            className="flex gap-3 -mx-3 rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+            className="relative flex gap-3 -mx-3 rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -120,7 +105,7 @@ export default function Navbar() {
             >
               <path d="M2.25 2.25a.75.75 0 0 0 0 1.5h1.386c.17 0 .318.114.362.278l2.558 9.592a3.752 3.752 0 0 0-2.806 3.63c0 .414.336.75.75.75h15.75a.75.75 0 0 0 0-1.5H5.378A2.25 2.25 0 0 1 7.5 15h11.218a.75.75 0 0 0 .674-.421 60.358 60.358 0 0 0 2.96-7.228.75.75 0 0 0-.525-.965A60.864 60.864 0 0 0 5.68 4.509l-.232-.867A1.875 1.875 0 0 0 3.636 2.25H2.25ZM3.75 20.25a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0ZM16.5 20.25a1.5 1.5 0 1 1 3 0 1.5 1.5 0 0 1-3 0Z" />
             </svg>
-            Cart{" "}
+            Panier
             {cartItemsCount > 0 && (
               <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full">
                 {cartItemsCount}
@@ -190,13 +175,13 @@ export default function Navbar() {
           ) : (
             <>
               <Link to="/login" className="text-sm font-medium text-gray-700">
-                Login
+                Connexion
               </Link>
               <Link
                 to="/register"
                 className="text-sm font-medium text-gray-700"
               >
-                Register
+                Inscription
               </Link>
             </>
           )}
@@ -208,10 +193,20 @@ export default function Navbar() {
         open={mobileMenuOpen}
         onClose={setMobileMenuOpen}
       >
-        <DialogPanel className="fixed inset-0 z-10 overflow-y-auto bg-white px-6 py-6 lg:px-8">
+        <div
+          className={`fixed inset-0 z-10 overflow-y-auto bg-white px-6 py-6 lg:px-8 ${
+            mobileMenuOpen
+              ? "mobile-menu-enter mobile-menu-enter-active"
+              : "mobile-menu-exit mobile-menu-exit-active"
+          }`}
+        >
           <div className="flex items-center justify-between">
-            <Link to="/" className="-m-1.5 p-1.5">
-              <span className="sr-only">Your Company</span>
+            <Link
+              onClick={() => setMobileMenuOpen(false)}
+              to="/"
+              className="-m-1.5 p-1.5"
+            >
+              <span className="sr-only">Votre entreprise</span>
               <img alt="" src="/img/logo.png" className="h-8 w-auto" />
             </Link>
 
@@ -220,38 +215,43 @@ export default function Navbar() {
               className="-m-2.5 rounded-md p-2.5 text-gray-700"
               onClick={() => setMobileMenuOpen(false)}
             >
-              <span className="sr-only">Close menu</span>
+              <span className="sr-only">Fermer le menu</span>
               <XMarkIcon className="h-6 w-6" aria-hidden="true" />
             </button>
           </div>
           <div className="mt-6">
             <Link
+              onClick={() => setMobileMenuOpen(false)}
               to="/"
               className="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50"
             >
-              Home
+              Accueil
             </Link>
             <Link
+              onClick={() => setMobileMenuOpen(false)}
               to="/products"
               className="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50"
             >
-              Products
+              Produits
             </Link>
             <Link
+              onClick={() => setMobileMenuOpen(false)}
               to="/about"
               className="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50"
             >
-              About
+              À propos
             </Link>
             {isAuthenticated ? (
               <>
                 <Link
+                  onClick={() => setMobileMenuOpen(false)}
                   to="/account-settings"
                   className="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50"
                 >
                   Paramètres de compte
                 </Link>
                 <Link
+                  onClick={() => setMobileMenuOpen(false)}
                   to="/order-history"
                   className="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50"
                 >
@@ -259,7 +259,10 @@ export default function Navbar() {
                 </Link>
 
                 <button
-                  onClick={handleLogout}
+                  onClick={() => {
+                    handleLogout();
+                    setMobileMenuOpen(false);
+                  }}
                   className="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50"
                 >
                   Déconnexion
@@ -268,21 +271,23 @@ export default function Navbar() {
             ) : (
               <>
                 <Link
+                  onClick={() => setMobileMenuOpen(false)}
                   to="/login"
                   className="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50"
                 >
-                  Login
+                  Connexion
                 </Link>
                 <Link
+                  onClick={() => setMobileMenuOpen(false)}
                   to="/register"
                   className="block px-3 py-2 rounded-md text-base font-medium text-gray-900 hover:bg-gray-50"
                 >
-                  Register
+                  Inscription
                 </Link>
               </>
             )}
           </div>
-        </DialogPanel>
+        </div>
       </Dialog>
     </header>
   );

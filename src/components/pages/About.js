@@ -89,9 +89,9 @@ const About = () => {
       </section>
 
       {/* Contact Section */}
-      <section className="flex flex-row gap-8 bg-white">
+      <section className="flex flex-col md:flex-row gap-8 bg-white">
         {/* Colonne gauche : Informations de contact */}
-        <div className="flex flex-col border-2 w-1/3 border-bleu rounded-2xl p-10">
+        <div className="flex flex-col border-2 md:w-1/3 border-bleu rounded-2xl p-10">
           {/* Email */}
           <div className="flex flex-col items-center mb-10">
             <svg

@@ -36,17 +36,20 @@ const Products = () => {
     <section className="bg-bleu w-full py-12">
       <div className="mx-10 lg:mx-20">
         <h2 className="text-2xl text-white font-bold mb-2">
-          Discover the newest iPhones with exclusive deals
+          Découvrez les nouveaux iPhones avec des offres exclusives
         </h2>
         <p className="text-white mb-6">
-          Upgrade to the latest technology at unbeatable prices. Choose your
-          favorite model and enjoy the best features Apple has to offer
+          Passez à la dernière technologie à des prix imbattables. Choisissez
+          votre modèle préféré et profitez des meilleures fonctionnalités
+          qu'Apple a à offrir
         </p>
+      </div>
+      <div className="mx-5 lg:mx-20">
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {products.map((product) => (
             <div
               key={product._id}
-              className="flex flex-col bg-white border rounded-xl h-auto p-4 shadow-md"
+              className="flex flex-col bg-white border rounded-2xl w-auto h-auto p-4 md:p-6 shadow-md"
             >
               <div className="flex justify-center items-center pb-4 mb-4">
                 <img
@@ -55,10 +58,8 @@ const Products = () => {
                   className="w-auto h-32 md:h-48 object-contain"
                 />
               </div>
-              <h3 className="text-lg md:text-xl font-bold text-center">
-                {product.name}
-              </h3>
-              <p className="text-lg md:text-2xl font-bold mb-4 text-center pt-4">
+              <h3 className="text-lg md:text-xl font-bold">{product.name}</h3>
+              <p className="text-lg md:text-2xl font-bold mb-4 pt-4">
                 {product.price} FCFA
               </p>
               <div className="mt-auto">
@@ -66,7 +67,7 @@ const Products = () => {
                   onClick={() => handleBuyNowClick(product._id)}
                   className="bg-orange text-sm md:text-xl text-white px-4 py-2 w-full rounded-xl hover:bg-orange-600"
                 >
-                  Buy now
+                  Acheter
                 </button>
               </div>
             </div>

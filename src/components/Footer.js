@@ -8,48 +8,44 @@ const Footer = () => {
         <div className="flex flex-col">
           <h3 className="text-lg font-bold">Navigation</h3>
           <div className="flex flex-col">
-            <Link to="/" className="hover:text-blue-400">
-              Home
+            <Link to="/" className="hover:text-orange">
+              Accueil
             </Link>
-            <Link to="/products" className="hover:text-blue-400">
-              Products
+            <Link to="/products" className="hover:text-orange">
+              Produits
             </Link>
-            <Link to="/" className="hover:text-blue-400">
-              Customer Reviews
+            <Link to="/" className="hover:text-orange">
+              Avis des clients
             </Link>
-            <Link to="/" className="hover:text-blue-400">
-              Privacy Policy
+            <Link to="/" className="hover:text-orange">
+              Politique de confidentialité
             </Link>
-            <Link to="/" className="hover:text-blue-400">
-              Terms of Use
+            <Link to="/" className="hover:text-orange">
+              Conditions d'utilisation
             </Link>
           </div>
           <Link
             className="flex flex-row gap-4 items-center text-2xl font-bold text-white mt-10"
             to="/"
           >
-            <img
-              src="/img/logo-white.png"
-              alt="logo"
-              className="text-Montserrat w-14"
-            />
+            <img src="/img/logo-white.png" alt="logo" className="w-14" />
             iMasterStore
           </Link>
         </div>
         <div className="flex flex-col">
-          <h3 className="text-lg font-bold">About Us</h3>
+          <h3 className="text-lg font-bold">À propos de nous</h3>
           <div className="flex flex-col">
-            <Link to="/" className="hover:text-blue-400">
-              Meet the team
+            <Link to="/" className="hover:text-orange">
+              Rencontrez l'équipe
             </Link>
-            <Link to="/products" className="hover:text-blue-400">
-              Compagny Overview
+            <Link to="/products" className="hover:text-orange">
+              Aperçu de l'entreprise
             </Link>
-            <Link to="/" className="hover:text-blue-400">
-              Our values
+            <Link to="/" className="hover:text-orange">
+              Nos valeurs
             </Link>
-            <Link to="/" className="hover:text-blue-400">
-              Our mission
+            <Link to="/" className="hover:text-orange">
+              Notre mission
             </Link>
           </div>
           <div className="flex flex-row items-center gap-5 mt-auto">
@@ -74,15 +70,15 @@ const Footer = () => {
           </div>
         </div>
         <div className="flex flex-col">
-          <h3 className="text-lg font-bold">Contact Us</h3>
+          <h3 className="text-lg font-bold">Contactez-nous</h3>
           <div className="flex flex-col">
-            <Link to="/" className="hover:text-blue-400">
+            <Link to="/" className="hover:text-orange">
               logoipsum@gmail.com
             </Link>
-            <Link to="/products" className="hover:text-blue-400">
+            <Link to="/products" className="hover:text-orange">
               (229) 555-0109
             </Link>
-            <Link to="/" className="hover:text-blue-400">
+            <Link to="/" className="hover:text-orange">
               (229) 657-0118
             </Link>
           </div>
