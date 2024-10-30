@@ -205,7 +205,7 @@ const ProductDetail = () => {
                   <button
                     key={color.name}
                     onClick={() => handleColorChange(color)}
-                    className={`p-4 m-1 border-white focus:border-bleu rounded-full ${
+                    className={`p-4 m-1 border border-white focus:border-bleu rounded-full ${
                       selectedColor === color
                         ? "border-black"
                         : "border-gray-300"

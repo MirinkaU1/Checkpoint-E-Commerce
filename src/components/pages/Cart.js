@@ -73,18 +73,20 @@ const Cart = () => {
           <ul>
             {cartItems.map((item, index) => (
               <li
-                key={`${item.productId}-${item.color.name}-${item.memory}`}
+                key={`${item.productId}-${item.color?.name}-${item.memory}`}
                 className="flex flex-col md:flex-row justify-between items-center mb-4 border-b pb-4"
               >
                 <div className="flex items-center">
-                  <img
-                    src={item.color.image[0]}
-                    alt={item.color.name}
-                    className="w-24 h-24 object-cover mt-2 mr-4"
-                  />
+                  {item.color?.image?.[0] && (
+                    <img
+                      src={item.color.image[0]}
+                      alt={item.color.name}
+                      className="w-24 h-24 object-cover mt-2 mr-4"
+                    />
+                  )}
                   <div>
                     <p className="font-semibold">{item.name}</p>
-                    <p>Couleur : {item.color.name}</p>
+                    <p>Couleur : {item.color?.name}</p>
                     <p>Mémoire : {item.memory} GB</p>
                     <p>Prix : {item.price} FCFA</p>
                   </div>
