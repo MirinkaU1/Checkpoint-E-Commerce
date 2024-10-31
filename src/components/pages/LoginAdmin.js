@@ -7,6 +7,7 @@ const LoginAdmin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false); // État pour gérer la visibilité du mot de passe
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -41,7 +42,8 @@ const LoginAdmin = () => {
       }
     } catch (err) {
       console.error("Erreur lors de la connexion:", err);
-      alert("Erreur lors de la connexion. Veuillez vérifier vos identifiants.");
+      setErrorMessage(true);
+      setTimeout(() => setErrorMessage(false), 3000);
     }
   };
 
@@ -54,6 +56,13 @@ const LoginAdmin = () => {
           className="w-full h-full object-cover"
         />
       </div>
+      {errorMessage && (
+        <div className="alert alert-error bg-white text-bleu shadow-lg w-80 md:max-w-md mb-4 fixed bottom-4 right-4">
+          <span>
+            Erreur lors de la connexion. Veuillez vérifier vos identifiants.
+          </span>
+        </div>
+      )}
       <div className="flex flex-col items-center justify-center w-full md:w-1/2 h-full bg-bleu p-8">
         <img src="/img/logo-white.png" alt="Logo" className="w-20 mb-5" />
         <h2 className="text-2xl font-bold mb-6 text-white text-center">

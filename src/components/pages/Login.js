@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-
 import axios from "axios";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showPassword, setShowPassword] = useState(false); // État pour gérer la visibilité du mot de passe
+  const [showPassword, setShowPassword] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(""); // État pour gérer les messages d'erreur
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -20,17 +20,13 @@ const Login = () => {
         },
         {
           headers: {
-            "Content-Type": "application/json", // En-tête Content-Type si nécessaire
+            "Content-Type": "application/json",
           },
-          withCredentials: true, // Si le backend utilise les cookies pour la session/authentification
+          withCredentials: true,
         }
       );
-      console.log("Response data:", response.data);
-
       const token = response.data.token;
       const user = response.data.user;
-      console.log("User data:", user); // Log des données utilisateur
-      console.log("Token:", token); // Log du token
 
       if (!user) {
         throw new Error("Les informations de l'utilisateur sont manquantes.");
@@ -38,11 +34,11 @@ const Login = () => {
 
       localStorage.setItem("user", JSON.stringify(user));
       localStorage.setItem("token", token);
-      alert("Connexion réussie !");
       navigate("/", { replace: true });
     } catch (err) {
       console.error("Erreur lors de la connexion:", err);
-      alert("Erreur lors de la connexion. Veuillez vérifier vos identifiants.");
+      setErrorMessage(true);
+      setTimeout(() => setErrorMessage(false), 3000);
     }
   };
 
@@ -58,8 +54,15 @@ const Login = () => {
       <div className="flex flex-col items-center justify-center w-full md:w-1/2 h-full bg-bleu p-8">
         <img src="/img/logo-white.png" alt="Logo" className="w-20 mb-5" />
         <h2 className="text-2xl font-bold mb-6 text-white text-center">
-          Connectez vous !
+          Connectez-vous !
         </h2>
+        {errorMessage && (
+          <div className="alert alert-error bg-white text-bleu shadow-lg w-80 md:max-w-md mb-4 fixed bottom-4 right-4">
+            <span>
+              Erreur lors de la connexion. Veuillez vérifier vos identifiants.
+            </span>
+          </div>
+        )}
         <form onSubmit={handleSubmit} className="w-full max-w-md">
           <div className="mb-4">
             <input

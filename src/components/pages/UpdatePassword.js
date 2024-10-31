@@ -5,6 +5,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 export default function UpdatePassword() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
   const { email } = location.state || {};
@@ -30,7 +31,8 @@ export default function UpdatePassword() {
       navigate("/login");
     } catch (error) {
       console.error("Erreur lors de la mise à jour du mot de passe :", error);
-      alert("Une erreur s'est produite lors de la mise à jour du mot de passe");
+      setErrorMessage(true);
+      setTimeout(() => setErrorMessage(false), 3000);
     }
   };
 
@@ -55,7 +57,13 @@ export default function UpdatePassword() {
         </button>
         <h1 className="text-3xl font-bold">Modifier le mot de passe</h1>
       </div>
-
+      {errorMessage && (
+        <div className="alert alert-error bg-white text-bleu shadow-lg w-80 md:max-w-md mb-4 fixed bottom-4 right-4">
+          <span>
+            Une erreur s'est produite lors de la mise à jour du mot de passe
+          </span>
+        </div>
+      )}
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="form-control">
           <label className="label">

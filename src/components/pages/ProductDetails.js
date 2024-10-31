@@ -71,8 +71,6 @@ const ProductDetail = () => {
       quantity: 1,
     };
 
-    console.log("Item added to cart:", newItem);
-
     const existingProductIndex = cart.findIndex(
       (item) =>
         item.productId === newItem.productId &&

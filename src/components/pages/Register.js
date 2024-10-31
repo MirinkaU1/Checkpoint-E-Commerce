@@ -8,6 +8,7 @@ const Register = () => {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false); // État pour gérer la visibilité du mot de passe
   const [emailError, setEmailError] = useState(""); // État pour gérer les erreurs d'email
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
   const validateEmail = (email) => {
@@ -42,7 +43,8 @@ const Register = () => {
       navigate("/login", { replace: true });
     } catch (err) {
       console.error("Erreur lors de l'inscription:", err);
-      alert("Erreur lors de l'inscription. Veuillez réessayer.");
+      setErrorMessage(true);
+      setTimeout(() => setErrorMessage(false), 3000);
     }
   };
 
@@ -60,6 +62,11 @@ const Register = () => {
         <h2 className="text-2xl font-bold mb-6 text-white text-center">
           Créez un compte !
         </h2>
+        {errorMessage && (
+          <div className="alert alert-error bg-white text-bleu shadow-lg w-80 md:max-w-md mb-4 fixed bottom-4 right-4">
+            <span>Erreur lors de l'inscription. Veuillez réessayer.</span>
+          </div>
+        )}
         <form onSubmit={handleSubmit} className="w-full max-w-md">
           <div className="mb-4">
             <input

@@ -28,8 +28,6 @@ const Cart = () => {
     updateCartItemsCount();
   };
 
-  // Cart.js
-
   const handleCheckout = async () => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -51,7 +49,6 @@ const Cart = () => {
 
         // Préparer les articles de la commande
         const orderItems = cartItems.map((item) => {
-          console.log("Processing item:", item);
           return {
             product: item.productId, // Utilisez la propriété qui contient l'ID du produit
             quantity: item.quantity,
@@ -68,17 +65,13 @@ const Cart = () => {
           }
         });
 
-        console.log("Cart items:", cartItems);
-
         const orderData = {
           orderItems,
           totalPrice: getTotalPrice(),
         };
 
-        console.log("Order data:", orderData); // Afficher les données de la commande
-
         // Envoyer la commande au backend
-        const response = await axios.post(
+        await axios.post(
           "https://imarketstore-backend.onrender.com/api/orders",
           orderData,
           {
@@ -87,9 +80,6 @@ const Cart = () => {
             },
           }
         );
-
-        const createdOrder = response.data;
-        console.log("Created order:", createdOrder); // Afficher la commande créée
 
         // Vider le panier
         localStorage.removeItem("cart");

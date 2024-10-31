@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function OrderHistory() {
   const [orders, setOrders] = useState([]);
+  const [errorMessage, setErrorMessage] = useState("");
   const navigate = useNavigate();
 
   const fetchOrders = useCallback(() => {
@@ -51,9 +52,8 @@ export default function OrderHistory() {
         })
         .catch((error) => {
           console.error("Erreur lors de la suppression des commandes :", error);
-          alert(
-            "Une erreur s'est produite lors de la suppression de l'historique."
-          );
+          setErrorMessage(true);
+          setTimeout(() => setErrorMessage(false), 3000);
         });
     }
   }
@@ -88,6 +88,14 @@ export default function OrderHistory() {
         </div>
       ) : (
         <div className="container mx-auto p-4 py-20 md:pb-40">
+          {errorMessage && (
+            <div className="alert alert-error bg-white text-bleu shadow-lg w-80 md:max-w-md mb-4 fixed bottom-4 right-4">
+              <span>
+                Une erreur s'est produite lors de la suppression de
+                l'historique.
+              </span>
+            </div>
+          )}
           <h1 className="text-3xl font-bold mb-6">Historique de commande</h1>
           <button onClick={handleDeleteHistory} className="btn btn-error mb-4">
             Supprimer l'historique
