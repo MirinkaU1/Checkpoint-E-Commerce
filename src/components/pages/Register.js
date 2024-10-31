@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Register = () => {
@@ -127,7 +127,7 @@ const Register = () => {
           </div>
           <button
             type="submit"
-            className="w-full bg-orange</svg> text-white py-2 rounded-lg"
+            className="w-full bg-orange text-white py-2 rounded-lg"
           >
             S'inscrire
           </button>
@@ -135,9 +135,9 @@ const Register = () => {
         <div className="mt-4 text-center">
           <p className="text-white">
             Vous avez déjà un compte ?{" "}
-            <a href="/login" className="text-orange hover:underline">
-              Aller à la connexion
-            </a>
+            <Link href="/login" className="text-orange hover:underline">
+              Connectez vous !
+            </Link>
           </p>
         </div>
         <button
