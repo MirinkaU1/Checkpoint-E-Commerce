@@ -133,9 +133,9 @@ const Login = () => {
         <div className="mt-4 text-center">
           <p className="text-white">
             Vous n'avez pas de compte?{" "}
-            <a href="/register" className="text-orange hover:underline">
+            <Link to="/register" className="text-orange hover:underline">
               Inscrivez-vous ici
-            </a>
+            </Link>
           </p>
           <p className="text-white mt-2">
             <Link to="/forgot-password" className="text-orange hover:underline">
