@@ -10,7 +10,7 @@ const Banner = () => {
       <div className="mx-10 lg:mx-20 mt-10 lg:mt-0 flex flex-col lg:flex-row items-center">
         <div className="text-center lg:text-left lg:w-1/2 space-y-4">
           <h1 className="text-3xl md:text-4xl font-bold text-bleu">
-            Trouvez votre <span className="text-orange">iPhone parfait -</span>
+            Trouvez votre <span className="text-orange">iPhone parfait</span>
             <br />
             Des offres imbattables vous attendent.
           </h1>

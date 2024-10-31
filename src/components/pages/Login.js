@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+
 import axios from "axios";
 
 const Login = () => {
@@ -137,9 +138,9 @@ const Login = () => {
             </a>
           </p>
           <p className="text-white mt-2">
-            <a href="/forgot-password" className="text-orange hover:underline">
+            <Link to="/forgot-password" className="text-orange hover:underline">
               Mot de passe oublié ?
-            </a>
+            </Link>
           </p>
         </div>
         <button

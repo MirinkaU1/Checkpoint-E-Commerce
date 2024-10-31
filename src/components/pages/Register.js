@@ -7,10 +7,22 @@ const Register = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false); // État pour gérer la visibilité du mot de passe
+  const [emailError, setEmailError] = useState(""); // État pour gérer les erreurs d'email
   const navigate = useNavigate();
+
+  const validateEmail = (email) => {
+    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return re.test(String(email).toLowerCase());
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!validateEmail(email)) {
+      setEmailError("Veuillez entrer une adresse email valide.");
+      return;
+    }
+
     try {
       await axios.post(
         `https://imarketstore-backend.onrender.com/api/users/register`,
@@ -63,11 +75,15 @@ const Register = () => {
             <input
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => {
+                setEmail(e.target.value);
+                setEmailError(""); // Réinitialiser l'erreur d'email
+              }}
               placeholder="Email"
               required
               className="w-full px-3 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
+            {emailError && <p className="text-red-500">{emailError}</p>}
           </div>
           <div className="mb-4 relative">
             <input
