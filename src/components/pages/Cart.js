@@ -114,7 +114,7 @@ const Cart = () => {
   return (
     <>
       {cartItems.length === 0 ? (
-        <div className="flex flex-col items-center justify-center h-screen">
+        <div className="flex flex-col text-center items-center justify-center h-screen">
           <h1 className="text-4xl font-bold mb-4">Votre panier est vide.</h1>
         </div>
       ) : (
