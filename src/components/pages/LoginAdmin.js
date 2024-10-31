@@ -25,9 +25,11 @@ const LoginAdmin = () => {
           withCredentials: true, // Si le backend utilise les cookies pour la session/authentification
         }
       );
+      console.log("API Response:", response.data); // Log de la réponse de l'API
       const { token } = response.data;
       localStorage.setItem("token", token);
       const decoded = jwtDecode(token);
+      console.log("Decoded Token:", decoded); // Log du token décodé
       localStorage.setItem("isAdmin", decoded.isAdmin);
       if (decoded.isAdmin === true) {
         alert("Connexion réussie !");

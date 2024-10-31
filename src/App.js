@@ -22,6 +22,8 @@ import NotFound from "./components/pages/NotFound";
 import Checkout from "./components/pages/Checkout";
 import Success from "./components/pages/Success";
 import { CartProvider } from "./components/context/CartContext";
+import AccountSettings from "./components/pages/AccountSettings";
+import OrderHistory from "./components/pages/OrderHistory";
 
 function App() {
   return (
@@ -62,6 +64,8 @@ const AppContent = () => {
         <Route path="/success" element={<Success />} />
         <Route path="/login-admin" element={<LoginAdmin />} />
         <Route path="/404" element={<NotFound />} />
+        <Route path="/account-settings" element={<AccountSettings />} />
+        <Route path="/order-history" element={<OrderHistory />} />
         <Route
           path="/admin"
           element={
