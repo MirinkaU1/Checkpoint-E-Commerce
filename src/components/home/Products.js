@@ -6,6 +6,26 @@ const Products = () => {
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();
 
+  const getLowestPrice = (product) => {
+    if (!product.memoryOptions || product.memoryOptions.length === 0) {
+      return product.basePrice || product.price || 0;
+    }
+
+    const memoryPrices = product.memoryOptions.map((option) => option.price);
+    const lowestPrice = Math.min(...memoryPrices);
+
+    let finalPrice = lowestPrice;
+    if (
+      product.promotion?.isActive &&
+      product.promotion.discountPercentage > 0
+    ) {
+      finalPrice =
+        finalPrice - (finalPrice * product.promotion.discountPercentage) / 100;
+    }
+
+    return finalPrice;
+  };
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -60,7 +80,8 @@ const Products = () => {
               </div>
               <h3 className="text-lg md:text-xl font-bold">{product.name}</h3>
               <p className="text-lg md:text-2xl font-bold mb-4 pt-4">
-                {product.price} FCFA
+                À partir de {getLowestPrice(product).toLocaleString("fr-FR")}{" "}
+                FCFA
               </p>
               <div className="mt-auto">
                 <button

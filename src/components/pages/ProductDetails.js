@@ -7,7 +7,7 @@ import { CartContext } from "./../context/CartContext";
 const ProductDetail = () => {
   const { productId } = useParams();
   const [product, setProduct] = useState(null);
-  const [selectedColor, setSelectedColor] = useState(null); // Changez "" en null
+  const [selectedColor, setSelectedColor] = useState(null);
   const [selectedMemory, setSelectedMemory] = useState("");
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showAlert, setShowAlert] = useState(false);
@@ -28,11 +28,10 @@ const ProductDetail = () => {
         setProduct(res.data);
 
         if (res.data && res.data.colors.length > 0) {
-          // Initialisez selectedColor avec le premier objet couleur
           setSelectedColor(res.data.colors[0]);
         }
         if (res.data && res.data.memoryOptions.length > 0) {
-          setSelectedMemory(res.data.memoryOptions[0]);
+          setSelectedMemory(res.data.memoryOptions[0].size);
         }
       } catch (err) {
         console.error("Erreur lors du chargement du produit:", err);
@@ -45,10 +44,6 @@ const ProductDetail = () => {
   const handleColorChange = (color) => {
     setSelectedColor(color);
     setCurrentImageIndex(0);
-  };
-
-  const handleMemoryChange = (memory) => {
-    setSelectedMemory(memory);
   };
 
   const handlePrevImage = () => {
@@ -67,18 +62,20 @@ const ProductDetail = () => {
     let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
     const newItem = {
-      productId: product.id,
+      productId: product._id,
       name: product.name,
-      price: product.price,
+      price: getPrice(),
       color: selectedColor,
       memory: selectedMemory,
       quantity: 1,
     };
 
+    console.log("Item added to cart:", newItem);
+
     const existingProductIndex = cart.findIndex(
       (item) =>
         item.productId === newItem.productId &&
-        item.color === newItem.color &&
+        item.color.name === newItem.color.name &&
         item.memory === newItem.memory
     );
 
@@ -90,9 +87,52 @@ const ProductDetail = () => {
 
     localStorage.setItem("cart", JSON.stringify(cart));
     updateCartItemsCount();
-    // Afficher l'alerte Daisy UI
     setShowAlert(true);
     setTimeout(() => setShowAlert(false), 3000);
+  };
+
+  const getLowestPrice = (product) => {
+    if (!product.memoryOptions || product.memoryOptions.length === 0) {
+      return product.basePrice || product.price || 0;
+    }
+
+    const memoryPrices = product.memoryOptions.map((option) => option.price);
+    const lowestPrice = Math.min(...memoryPrices);
+
+    let finalPrice = lowestPrice;
+    if (
+      product.promotion?.isActive &&
+      product.promotion.discountPercentage > 0
+    ) {
+      finalPrice =
+        finalPrice - (finalPrice * product.promotion.discountPercentage) / 100;
+    }
+
+    return finalPrice;
+  };
+
+  const getPrice = () => {
+    let price = 0;
+
+    if (selectedMemory) {
+      const memoryOption = product.memoryOptions.find(
+        (option) => option.size === selectedMemory
+      );
+      if (memoryOption) {
+        price = memoryOption.price;
+      }
+    } else {
+      price = getLowestPrice(product);
+    }
+
+    if (
+      product.promotion?.isActive &&
+      product.promotion.discountPercentage > 0
+    ) {
+      price = price - (price * product.promotion.discountPercentage) / 100;
+    }
+
+    return price;
   };
 
   if (!product || !selectedColor) {
@@ -175,7 +215,6 @@ const ProductDetail = () => {
             )}
           </div>
           <div className="flex gap-4 overflow-x-auto">
-            {/* Miniatures */}
             {selectedColor.image && selectedColor.image.length > 0 ? (
               selectedColor.image.map((image, index) => (
                 <img
@@ -214,30 +253,31 @@ const ProductDetail = () => {
               </div>
             </div>
 
-            {/* Sélection de la mémoire */}
-            <div className="mb-4">
-              <h3 className="text-lg font-semibold">Mémoire disponible :</h3>
-              <div className="flex">
-                {product.memoryOptions.map((memory) => (
-                  <button
-                    key={memory}
-                    onClick={() => handleMemoryChange(memory)}
-                    className={`p-2 m-1 border rounded-2xl ${
-                      selectedMemory === memory
-                        ? "border-bleu text-bleu"
-                        : "border-black"
-                    }`}
-                  >
-                    {memory} Gb
-                  </button>
-                ))}
+            {product.memoryOptions && product.memoryOptions.length > 0 && (
+              <div className="mb-4">
+                <h3 className="font-bold">Mémoire :</h3>
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {product.memoryOptions.map((memoryOption) => (
+                    <button
+                      key={memoryOption._id}
+                      onClick={() => setSelectedMemory(memoryOption.size)}
+                      className={`px-4 py-2 border rounded-xl ${
+                        selectedMemory === memoryOption.size
+                          ? "bg-bleu text-white"
+                          : "border-bleu text-bleu"
+                      }`}
+                    >
+                      {memoryOption.size} Go
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
 
             {/* Section Prix et Actions */}
             <div className="mb-8">
               <h2 className="text-3xl font-bold text-gray-800">
-                {product.price} FCFA
+                {getPrice().toLocaleString("fr-FR")} FCFA
               </h2>
               <p
                 className={
@@ -269,8 +309,11 @@ const ProductDetail = () => {
           </div>
         </div>
       </div>
-      <h2>Description</h2>
-      <p>{product.description}</p>
+      <h1 className="mt-10 text-2xl">Description</h1>
+      <div
+        dangerouslySetInnerHTML={{ __html: product.description }}
+        className="prose mt-5"
+      />
     </div>
   );
 };

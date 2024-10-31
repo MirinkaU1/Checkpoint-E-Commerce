@@ -24,7 +24,18 @@ const Login = () => {
           withCredentials: true, // Si le backend utilise les cookies pour la session/authentification
         }
       );
-      const { token } = response.data;
+      console.log("Response data:", response.data);
+
+      const token = response.data.token;
+      const user = response.data.user;
+      console.log("User data:", user); // Log des données utilisateur
+      console.log("Token:", token); // Log du token
+
+      if (!user) {
+        throw new Error("Les informations de l'utilisateur sont manquantes.");
+      }
+
+      localStorage.setItem("user", JSON.stringify(user));
       localStorage.setItem("token", token);
       alert("Connexion réussie !");
       navigate("/", { replace: true });

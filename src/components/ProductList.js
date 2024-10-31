@@ -18,8 +18,33 @@ const ProductList = ({ products = [] }) => {
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   const handleBuyNowClick = (productId) => {
-    console.log("Navigating to product with ID:", productId);
     navigate(`/products/${productId}`);
+  };
+
+  // Fonction pour calculer le prix le plus bas d'un produit
+  const getLowestPrice = (product) => {
+    // Vérifier que memoryOptions existe et n'est pas vide
+    if (!product.memoryOptions || product.memoryOptions.length === 0) {
+      return product.basePrice || product.price || 0;
+    }
+
+    // Extraire les prix des options de mémoire
+    const memoryPrices = product.memoryOptions.map((option) => option.price);
+
+    // Trouver le prix le plus bas
+    const lowestPrice = Math.min(...memoryPrices);
+
+    // Appliquer la promotion si elle est active
+    let finalPrice = lowestPrice;
+    if (
+      product.promotion?.isActive &&
+      product.promotion.discountPercentage > 0
+    ) {
+      finalPrice =
+        finalPrice - (finalPrice * product.promotion.discountPercentage) / 100;
+    }
+
+    return finalPrice;
   };
 
   return (
@@ -39,19 +64,15 @@ const ProductList = ({ products = [] }) => {
             </div>
             <h3 className="text-lg md:text-xl font-bold">{product.name}</h3>
             <p className="text-lg md:text-2xl font-bold mt-auto mb-4 pt-4">
-              {product.price} FCFA
+              À partir de {getLowestPrice(product).toLocaleString("fr-FR")} FCFA
             </p>
             <div className="mt-auto">
-              {product ? (
-                <button
-                  onClick={() => handleBuyNowClick(product._id)}
-                  className="bg-orange text-sm md:text-xl text-white px-4 py-2 w-full rounded-xl hover:bg-orange-600"
-                >
-                  Acheter
-                </button>
-              ) : (
-                <p>Chargement du produit...</p>
-              )}
+              <button
+                onClick={() => handleBuyNowClick(product._id)}
+                className="bg-orange text-sm md:text-xl text-white px-4 py-2 w-full rounded-xl hover:bg-orange-600"
+              >
+                Acheter
+              </button>
             </div>
           </div>
         ))}
