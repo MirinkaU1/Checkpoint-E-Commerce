@@ -38,7 +38,7 @@ const Products = () => {
   // };
 
   return (
-    <section className="relative flex flex-col min-h-screen w-full">
+    <section className="relative flex flex-col w-full">
       <div className="bg-blue-600 text-white flex gap-2 items-center justify-around px-3 mt-20">
         {/* <button
           onClick={handleFilterClick}
