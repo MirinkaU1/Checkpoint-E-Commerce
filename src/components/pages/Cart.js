@@ -49,9 +49,6 @@ const Cart = () => {
           );
         }
 
-        // Vérifier les articles du panier
-        console.log("Cart items:", cartItems);
-
         // Préparer les articles de la commande
         const orderItems = cartItems.map((item) => {
           console.log("Processing item:", item);
@@ -115,32 +112,33 @@ const Cart = () => {
   };
 
   return (
-    <div className="container mx-auto p-4 py-20 md:pb-40">
-      <div className="flex items-center gap-5">
-        <button
-          onClick={() => navigate(-1)}
-          className="px-4 py-2 text-bleu mb-4 flex items-center"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="currentColor"
-            class="size-6"
-          >
-            <path
-              fill-rule="evenodd"
-              d="M7.72 12.53a.75.75 0 0 1 0-1.06l7.5-7.5a.75.75 0 1 1 1.06 1.06L9.31 12l6.97 6.97a.75.75 0 1 1-1.06 1.06l-7.5-7.5Z"
-              clip-rule="evenodd"
-            />
-          </svg>
-        </button>
-        <h1 className="text-3xl font-bold mb-4">Votre Panier</h1>
-      </div>
-
+    <>
       {cartItems.length === 0 ? (
-        <p>Votre panier est vide.</p>
+        <div className="flex flex-col items-center justify-center h-screen">
+          <h1 className="text-4xl font-bold mb-4">Votre panier est vide.</h1>
+        </div>
       ) : (
-        <>
+        <div className="container mx-auto p-4 py-20 md:pb-40">
+          <div className="flex items-center gap-5">
+            <button
+              onClick={() => navigate(-1)}
+              className="px-4 py-2 text-bleu mb-4 flex items-center"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+                class="size-6"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M7.72 12.53a.75.75 0 0 1 0-1.06l7.5-7.5a.75.75 0 1 1 1.06 1.06L9.31 12l6.97 6.97a.75.75 0 1 1-1.06 1.06l-7.5-7.5Z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </button>
+            <h1 className="text-3xl font-bold mb-4">Votre Panier</h1>
+          </div>
           <ul>
             {cartItems.map((item, index) => (
               <li
@@ -231,24 +229,24 @@ const Cart = () => {
               </li>
             ))}
           </ul>
-        </>
+          <div className="mt-auto">
+            <div className="flex justify-end mt-4">
+              <p className="text-xl font-semibold">
+                Total : {getTotalPrice().toLocaleString("fr-FR")} FCFA
+              </p>
+            </div>
+            <div className="flex justify-end mt-4">
+              <button
+                onClick={handleCheckout}
+                className="px-6 py-3 bg-green-500 text-white rounded"
+              >
+                Valider la commande
+              </button>
+            </div>
+          </div>
+        </div>
       )}
-      <div className="mt-auto">
-        <div className="flex justify-end mt-4">
-          <p className="text-xl font-semibold">
-            Total : {getTotalPrice().toLocaleString("fr-FR")} FCFA
-          </p>
-        </div>
-        <div className="flex justify-end mt-4">
-          <button
-            onClick={handleCheckout}
-            className="px-6 py-3 bg-green-500 text-white rounded"
-          >
-            Valider la commande
-          </button>
-        </div>
-      </div>
-    </div>
+    </>
   );
 };
 
