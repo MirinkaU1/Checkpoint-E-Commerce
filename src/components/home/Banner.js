@@ -15,7 +15,7 @@ const Banner = () => {
             Des offres imbattables vous attendent.
           </h1>
           <Link to="/products">
-            <button className="bg-orange text-white text-xl py-3 px-4 rounded-lg">
+            <button className="bg-orange text-white text-xl mt-4 py-3 px-4 rounded-lg">
               Découvrez nos offres
             </button>
           </Link>
