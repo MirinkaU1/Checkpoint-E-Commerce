@@ -34,7 +34,29 @@ export default function AccountSettings() {
 
   return (
     <div className="container mx-auto p-4 py-20 md:pb-40 h-screen">
-      <h1 className="text-3xl font-bold mb-6">Paramètres de compte</h1>
+      <div className="flex items-center gap-4 mb-6">
+        <button
+          onClick={() => navigate(-1)}
+          className="flex items-center gap-4 text-black hover:underline"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="size-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M15.75 19.5 8.25 12l7.5-7.5"
+            />
+          </svg>
+        </button>
+        <h1 className="text-3xl font-bold">Paramètres de compte</h1>
+      </div>
+
       <div className="space-y-4">
         <h2 className="text-xl font-bold">Informations personnelles</h2>
         <div className="form-control">

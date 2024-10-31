@@ -36,7 +36,26 @@ export default function UpdatePassword() {
 
   return (
     <div className="container mx-auto p-4 py-20 md:pb-40 h-screen">
-      <h1 className="text-3xl font-bold mb-6">Modifier le mot de passe</h1>
+      <div className="flex items-center gap-4 mb-6">
+        <button onClick={() => navigate(-1)}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="size-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M15.75 19.5 8.25 12l7.5-7.5"
+            />
+          </svg>
+        </button>
+        <h1 className="text-3xl font-bold">Modifier le mot de passe</h1>
+      </div>
+
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="form-control">
           <label className="label">
