@@ -25,7 +25,7 @@ export default function VerifyCode() {
       );
 
       // Si le code est valide, rediriger vers la page de mise à jour du mot de passe
-      navigate("/update-password", { state: { email } });
+      navigate("/reset-password", { state: { email } });
     } catch (err) {
       console.error("Erreur lors de la vérification du code:", err);
       setErrorMessage(true);
@@ -41,6 +41,10 @@ export default function VerifyCode() {
           <span>Le code de vérification est invalide ou a expiré.</span>
         </div>
       )}
+      <p className="mb-4">
+        Veuillez vérifier votre boîte mail pour récupérer le code de
+        vérification.
+      </p>
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="form-control">
           <label className="label">

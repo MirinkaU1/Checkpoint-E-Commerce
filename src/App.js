@@ -24,6 +24,7 @@ import Success from "./components/pages/Success";
 import { CartProvider } from "./components/context/CartContext";
 import AccountSettings from "./components/pages/AccountSettings";
 import UpdatePassword from "./components/pages/UpdatePassword";
+import ResetPassword from "./components/pages/ResetPassword";
 import OrderHistory from "./components/pages/OrderHistory";
 import ForgotPassword from "./components/pages/ForgotPassword";
 import VerifyCode from "./components/pages/VerifyCode";
@@ -70,6 +71,7 @@ const AppContent = () => {
           <Route path="/404" element={<NotFound />} />
           <Route path="/account-settings" element={<AccountSettings />} />
           <Route path="/update-password" element={<UpdatePassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
           <Route path="/order-history" element={<OrderHistory />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/verify-code" element={<VerifyCode />} />
