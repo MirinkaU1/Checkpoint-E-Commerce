@@ -140,6 +140,11 @@ const Login = () => {
               Inscrivez-vous ici
             </a>
           </p>
+          <p className="text-white mt-2">
+            <a href="/forgot-password" className="text-orange hover:underline">
+              Mot de passe oublié ?
+            </a>
+          </p>
         </div>
         <button
           onClick={handleBackClick}

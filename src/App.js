@@ -23,7 +23,10 @@ import Checkout from "./components/pages/Checkout";
 import Success from "./components/pages/Success";
 import { CartProvider } from "./components/context/CartContext";
 import AccountSettings from "./components/pages/AccountSettings";
+import UpdatePassword from "./components/pages/UpdatePassword";
 import OrderHistory from "./components/pages/OrderHistory";
+import ForgotPassword from "./components/pages/ForgotPassword";
+import VerifyCode from "./components/pages/VerifyCode";
 
 function App() {
   return (
@@ -50,36 +53,41 @@ const AppContent = () => {
   const isAdmin = localStorage.getItem("isAdmin") === "true"; // Vérifiez si l'utilisateur est un administrateur
 
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       {!hideNavBar && <Navbar />}
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/products" element={<Products />} />
-        <Route path="/products/:productId" element={<ProductDetails />} />
-        <Route path="/about" element={<About />} />
-        <Route path="/cart" element={<Cart />} />
-        <Route path="/checkout" element={<Checkout />} />
-        <Route path="/success" element={<Success />} />
-        <Route path="/login-admin" element={<LoginAdmin />} />
-        <Route path="/404" element={<NotFound />} />
-        <Route path="/account-settings" element={<AccountSettings />} />
-        <Route path="/order-history" element={<OrderHistory />} />
-        <Route
-          path="/admin"
-          element={
-            isAuthenticated && isAdmin ? (
-              <Admin />
-            ) : (
-              <Navigate to="/login-admin" />
-            )
-          }
-        />
-        <Route path="*" element={<Navigate to="/404" />} />
-      </Routes>
+      <div className="flex-grow">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/products" element={<Products />} />
+          <Route path="/products/:productId" element={<ProductDetails />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/cart" element={<Cart />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/success" element={<Success />} />
+          <Route path="/login-admin" element={<LoginAdmin />} />
+          <Route path="/404" element={<NotFound />} />
+          <Route path="/account-settings" element={<AccountSettings />} />
+          <Route path="/update-password" element={<UpdatePassword />} />
+          <Route path="/order-history" element={<OrderHistory />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/verify-code" element={<VerifyCode />} />
+          <Route
+            path="/admin"
+            element={
+              isAuthenticated && isAdmin ? (
+                <Admin />
+              ) : (
+                <Navigate to="/login-admin" />
+              )
+            }
+          />
+          <Route path="*" element={<Navigate to="/404" />} />
+        </Routes>
+      </div>
       {!hideFooter && <Footer />}
-    </>
+    </div>
   );
 };
 

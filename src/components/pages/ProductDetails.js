@@ -11,6 +11,7 @@ const ProductDetail = () => {
   const [selectedMemory, setSelectedMemory] = useState("");
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [showAlert, setShowAlert] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
   const { updateCartItemsCount } = useContext(CartContext);
 
@@ -133,6 +134,11 @@ const ProductDetail = () => {
     }
 
     return price;
+  };
+
+  const getShortDescription = (description) => {
+    const words = description.split(" ");
+    return words.slice(0, 50).join(" ") + (words.length > 50 ? "..." : "");
   };
 
   if (!product || !selectedColor) {
@@ -309,11 +315,40 @@ const ProductDetail = () => {
           </div>
         </div>
       </div>
-      <h1 className="mt-10 text-2xl">Description</h1>
-      <div
-        dangerouslySetInnerHTML={{ __html: product.description }}
-        className="prose mt-5"
-      />
+      <h1 className="mt-10 text-2xl font-bold">Description</h1>
+      <div className="prose mt-5">
+        <div
+          dangerouslySetInnerHTML={{
+            __html: getShortDescription(product.description),
+          }}
+        />
+        {product.description.split(" ").length > 50 && (
+          <button
+            onClick={() => setShowModal(true)}
+            className="text-blue-500 underline"
+          >
+            Afficher plus
+          </button>
+        )}
+      </div>
+
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+          <div className="bg-white mx-4 p-8 rounded-lg max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+            <h2 className="text-2xl font-bold mb-4">Description complète</h2>
+            <div
+              dangerouslySetInnerHTML={{ __html: product.description }}
+              className="prose"
+            />
+            <button
+              onClick={() => setShowModal(false)}
+              className="mt-4 bg-blue-500 text-white py-2 px-4 rounded"
+            >
+              Fermer
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

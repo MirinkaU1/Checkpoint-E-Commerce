@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom";
 
 const Products = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  // const [filter, setFilter] = useState(false);
   const [products, setProducts] = useState([]);
   const navigate = useNavigate();
 
@@ -33,33 +32,9 @@ const Products = () => {
     fetchProducts();
   }, []);
 
-  // const handleFilterClick = () => {
-  //   setFilter(!filter);
-  // };
-
   return (
     <section className="relative flex flex-col w-full">
       <div className="bg-blue-600 text-white flex gap-2 items-center justify-around px-3 mt-20">
-        {/* <button
-          onClick={handleFilterClick}
-          className="flex gap-4 my-4 p-2 text-white rounded-full"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke-width="1.5"
-            stroke="currentColor"
-            class="size-6"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              d="M10.5 6h9.75M10.5 6a1.5 1.5 0 1 1-3 0m3 0a1.5 1.5 0 1 0-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 0 1-3 0m3 0a1.5 1.5 0 0 0-3 0m-9.75 0h9.75"
-            />
-          </svg>
-          <span>Filtrer</span>
-        </button> */}
         <button
           onClick={() => navigate(-1)}
           className="px-4 py-2 text-white flex items-center"
@@ -68,12 +43,12 @@ const Products = () => {
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
             fill="currentColor"
-            class="size-6"
+            className="size-6"
           >
             <path
-              fill-rule="evenodd"
+              fillRule="evenodd"
               d="M7.72 12.53a.75.75 0 0 1 0-1.06l7.5-7.5a.75.75 0 1 1 1.06 1.06L9.31 12l6.97 6.97a.75.75 0 1 1-1.06 1.06l-7.5-7.5Z"
-              clip-rule="evenodd"
+              clipRule="evenodd"
             />
           </svg>
         </button>
@@ -92,11 +67,7 @@ const Products = () => {
         </div>
       </div>
       <div className="product_contain">
-        <ProductList
-          searchTerm={searchTerm}
-          // filter={filter}
-          products={products}
-        />
+        <ProductList searchTerm={searchTerm} products={products} />
       </div>
     </section>
   );
