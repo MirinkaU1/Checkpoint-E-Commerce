@@ -1,39 +1,37 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 export default function UpdatePassword() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
+  const { email } = location.state || {};
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       alert("Les mots de passe ne correspondent pas");
       return;
     }
 
-    axios
-      .put(
-        "https://imarketstore-backend.onrender.com/api/users/profile",
-        { password },
+    try {
+      await axios.post(
+        "https://imarketstore-backend.onrender.com/api/users/reset-password",
+        { email, password },
         {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
+            "Content-Type": "application/json",
           },
         }
-      )
-      .then((response) => {
-        alert("Mot de passe mis à jour avec succès");
-        navigate("/account-settings");
-      })
-      .catch((error) => {
-        console.error("Erreur lors de la mise à jour du mot de passe :", error);
-        alert(
-          "Une erreur s'est produite lors de la mise à jour du mot de passe"
-        );
-      });
+      );
+      alert("Mot de passe mis à jour avec succès");
+      navigate("/login");
+    } catch (error) {
+      console.error("Erreur lors de la mise à jour du mot de passe :", error);
+      alert("Une erreur s'est produite lors de la mise à jour du mot de passe");
+    }
   };
 
   return (

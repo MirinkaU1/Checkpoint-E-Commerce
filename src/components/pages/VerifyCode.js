@@ -4,34 +4,30 @@ import { useNavigate, useLocation } from "react-router-dom";
 
 export default function VerifyCode() {
   const [code, setCode] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
   const location = useLocation();
   const { email } = location.state || {};
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
-      alert("Les mots de passe ne correspondent pas");
-      return;
-    }
 
     try {
+      // Vérifier le code de vérification
       await axios.post(
         `https://imarketstore-backend.onrender.com/api/users/verify-code`,
-        { email, code, password },
+        { email, code },
         {
           headers: {
             "Content-Type": "application/json",
           },
         }
       );
-      alert("Mot de passe mis à jour avec succès");
-      navigate("/login");
+
+      // Si le code est valide, rediriger vers la page de mise à jour du mot de passe
+      navigate("/update-password", { state: { email } });
     } catch (err) {
       console.error("Erreur lors de la vérification du code:", err);
-      alert("Une erreur s'est produite. Veuillez réessayer.");
+      alert("Le code de vérification est invalide ou a expiré.");
     }
   };
 
@@ -52,36 +48,8 @@ export default function VerifyCode() {
             required
           />
         </div>
-        <div className="form-control">
-          <label className="label">
-            <span className="label-text">Nouveau mot de passe</span>
-          </label>
-          <input
-            type="password"
-            name="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="input input-bordered w-full"
-            required
-          />
-        </div>
-        <div className="form-control">
-          <label className="label">
-            <span className="label-text">
-              Confirmer le nouveau mot de passe
-            </span>
-          </label>
-          <input
-            type="password"
-            name="confirmPassword"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            className="input input-bordered w-full"
-            required
-          />
-        </div>
         <button type="submit" className="btn btn-primary mt-4">
-          Enregistrer les modifications
+          Valider le code
         </button>
       </form>
     </div>
