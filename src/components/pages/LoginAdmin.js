@@ -45,10 +45,6 @@ const LoginAdmin = () => {
     }
   };
 
-  const handleBackClick = () => {
-    navigate(-1); // Redirige vers la page précédente
-  };
-
   return (
     <div className="flex flex-col md:flex-row items-center w-full h-screen">
       <div className="hidden md:block w-1/2 h-full">
@@ -134,10 +130,24 @@ const LoginAdmin = () => {
           </button>
         </form>
         <button
-          onClick={handleBackClick}
-          className="mt-4 bg-gray-500 text-white py-2 px-4 rounded-lg hover:bg-gray-600"
+          onClick={() => navigate(-1)}
+          className="flex items-center gap-4 mt-5 text-white hover:underline"
         >
-          Go back
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="size-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M15.75 19.5 8.25 12l7.5-7.5"
+            />
+          </svg>
+          <span>Back</span>
         </button>
       </div>
     </div>
