@@ -9,6 +9,7 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false); // État pour gérer la visibilité du mot de passe
   const [emailError, setEmailError] = useState(""); // État pour gérer les erreurs d'email
   const [errorMessage, setErrorMessage] = useState("");
+  const [showAlert, setShowAlert] = useState(false);
   const navigate = useNavigate();
 
   const validateEmail = (email) => {
@@ -39,7 +40,9 @@ const Register = () => {
           withCredentials: true, // Si le backend utilise les cookies pour la session/authentification
         }
       );
-      alert("Inscription réussie ! Vous pouvez maintenant vous connecter.");
+      setShowAlert(true);
+      setTimeout(() => setShowAlert(false), 3000);
+
       navigate("/login", { replace: true });
     } catch (err) {
       console.error("Erreur lors de l'inscription:", err);
@@ -65,6 +68,13 @@ const Register = () => {
         {errorMessage && (
           <div className="alert alert-error bg-white text-bleu shadow-lg w-80 md:max-w-md mb-4 fixed bottom-4 right-4">
             <span>Erreur lors de l'inscription. Veuillez réessayer.</span>
+          </div>
+        )}
+        {showAlert && (
+          <div className="alert alert-error bg-white text-bleu shadow-lg w-80 md:max-w-md mb-4 fixed bottom-4 right-4">
+            <span>
+              Inscription réussie ! Vous pouvez maintenant vous connecter.
+            </span>
           </div>
         )}
         <form onSubmit={handleSubmit} className="w-full max-w-md">
