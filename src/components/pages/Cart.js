@@ -109,10 +109,10 @@ const Cart = () => {
         </div>
       ) : (
         <div className="container mx-auto p-4 py-20 md:pb-40">
-          <div className="flex items-center gap-5">
+          <div className="flex items-center gap-5 mb-6">
             <button
               onClick={() => navigate(-1)}
-              className="px-4 py-2 text-bleu mb-4 flex items-center"
+              className="px-4 py-2 text-bleu flex items-center"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -127,7 +127,7 @@ const Cart = () => {
                 />
               </svg>
             </button>
-            <h1 className="text-3xl font-bold mb-4">Votre Panier</h1>
+            <h1 className="text-3xl font-bold">Votre Panier</h1>
           </div>
           <ul>
             {cartItems.map((item, index) => (
