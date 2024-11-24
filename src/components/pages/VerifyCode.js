@@ -15,7 +15,7 @@ export default function VerifyCode() {
     try {
       // Vérifier le code de vérification
       await axios.post(
-        `https://imarketstore-backend.onrender.com/api/users/verify-code`,
+        `${process.env.REACT_APP_BACKEND_URL}/api/users/verify-code`,
         { email, code },
         {
           headers: {

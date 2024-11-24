@@ -24,7 +24,7 @@ const ProductDetail = () => {
 
       try {
         const res = await axios.get(
-          `https://imarketstore-backend.onrender.com/api/products/${productId}`
+          `${process.env.REACT_APP_BACKEND_URL}/api/products/${productId}`
         );
         setProduct(res.data);
 
@@ -141,8 +141,11 @@ const ProductDetail = () => {
 
   if (!product || !selectedColor) {
     return (
-      <div className="flex flex-col items-center justify-center h-screen">
-        <h1 className="text-4xl font-bold mb-4">Chargement</h1>
+      <div className="flex justify-center items-center h-screen">
+        <div className="loader">
+          <div className="loader-small"></div>
+          <div className="loader-large"></div>
+        </div>
       </div>
     );
   }
@@ -225,8 +228,8 @@ const ProductDetail = () => {
                   key={index}
                   src={image}
                   alt={`Thumbnail ${index}`}
-                  className={`w-16 h-16 object-cover rounded-xl border ${
-                    currentImageIndex === index ? "border-blue-500" : ""
+                  className={`w-16 h-16 object-cover cursor-pointer rounded-xl hover:border-bleu border ${
+                    currentImageIndex === index ? "border-bleu" : ""
                   }`}
                   onClick={() => setCurrentImageIndex(index)}
                 />
@@ -333,17 +336,32 @@ const ProductDetail = () => {
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
           <div className="bg-white mx-4 p-8 rounded-lg max-w-2xl w-full max-h-[80vh] overflow-y-auto">
-            <h2 className="text-2xl font-bold mb-4">Description complète</h2>
+            <div className="flex flex-row gap-4 items-center mb-4">
+              <h2 className="text-2xl font-bold">Description complète</h2>
+              <button
+                onClick={() => setShowModal(false)}
+                className="px-4 py-2 ml-auto flex items-center"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                  class="size-6"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M6 18 18 6M6 6l12 12"
+                  />
+                </svg>
+              </button>
+            </div>
             <div
               dangerouslySetInnerHTML={{ __html: product.description }}
               className="prose"
             />
-            <button
-              onClick={() => setShowModal(false)}
-              className="mt-4 bg-blue-500 text-white py-2 px-4 rounded"
-            >
-              Fermer
-            </button>
           </div>
         </div>
       )}

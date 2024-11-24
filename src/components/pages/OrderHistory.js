@@ -9,7 +9,7 @@ export default function OrderHistory() {
 
   const fetchOrders = useCallback(() => {
     axios
-      .get("https://imarketstore-backend.onrender.com/api/orders/myorders", {
+      .get(`${process.env.REACT_APP_BACKEND_URL}/api/orders/myorders`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
@@ -38,14 +38,11 @@ export default function OrderHistory() {
       )
     ) {
       axios
-        .delete(
-          "https://imarketstore-backend.onrender.com/api/orders/deleteAll",
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        )
+        .delete(`${process.env.REACT_APP_BACKEND_URL}/api/orders/deleteAll`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
         .then((response) => {
           alert("Historique de commandes supprimé avec succès.");
           setOrders([]);

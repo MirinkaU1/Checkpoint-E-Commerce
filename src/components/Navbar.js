@@ -75,27 +75,24 @@ export default function Navbar() {
           </button>
         </div>
         <div className="hidden lg:flex lg:items-center lg:gap-x-12">
-          <Link
-            to="/"
-            className="text-sm font-semibold leading-6 text-gray-900"
-          >
+          <Link to="/" className="menu__link text-base leading-6 text-gray-900">
             Accueil
           </Link>
           <Link
             to="/products"
-            className="text-sm font-semibold leading-6 text-gray-900"
+            className="menu__link text-base leading-6 text-gray-900"
           >
             Produits
           </Link>
           <Link
             to="/about"
-            className="text-sm font-semibold leading-6 text-gray-900"
+            className="menu__link text-base leading-6 text-gray-900"
           >
             À propos
           </Link>
           <Link
             to="/cart"
-            className="relative flex gap-3 -mx-3 rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+            className="relative flex gap-3 -mx-3 rounded-lg px-3 py-2 text-base leading-7 text-gray-900 hover:bg-gray-50"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -136,7 +133,7 @@ export default function Navbar() {
                           to="/account-settings"
                           className={`${
                             active ? "bg-gray-100" : ""
-                          } flex justify-between w-full px-4 py-2 text-sm text-gray-700`}
+                          } flex justify-between w-full px-4 py-2 text-base text-gray-700`}
                         >
                           Paramètres de compte
                         </Link>
@@ -148,7 +145,7 @@ export default function Navbar() {
                           to="/order-history"
                           className={`${
                             active ? "bg-gray-100" : ""
-                          } flex justify-between w-full px-4 py-2 text-sm text-gray-700`}
+                          } flex justify-between w-full px-4 py-2 text-base text-gray-700`}
                         >
                           Historique de commande
                         </Link>
@@ -162,7 +159,7 @@ export default function Navbar() {
                           onClick={handleLogout}
                           className={`${
                             active ? "bg-gray-100" : ""
-                          } flex justify-between w-full px-4 py-2 text-sm text-gray-700`}
+                          } flex justify-between w-full px-4 py-2 text-base text-gray-700`}
                         >
                           Déconnexion
                         </button>
@@ -174,13 +171,10 @@ export default function Navbar() {
             </Menu>
           ) : (
             <>
-              <Link to="/login" className="text-sm font-medium text-gray-700">
+              <Link to="/login" className="text-base text-gray-700">
                 Connexion
               </Link>
-              <Link
-                to="/register"
-                className="text-sm font-medium text-gray-700"
-              >
+              <Link to="/register" className="text-base text-gray-700">
                 Inscription
               </Link>
             </>
@@ -194,10 +188,9 @@ export default function Navbar() {
         onClose={setMobileMenuOpen}
       >
         <div
-          className={`fixed inset-0 z-10 overflow-y-auto bg-white px-6 py-6 lg:px-8 ${
-            mobileMenuOpen
-              ? "mobile-menu-enter mobile-menu-enter-active"
-              : "mobile-menu-exit mobile-menu-exit-active"
+          className={`fixed inset-0 z-10 overflow-y-auto bg-white px-6 py-6 lg:px-8 transition-transform duration-300 transform ${
+            mobileMenuOpen ? "translate-y-0" : "-translate-y-full"
+          }
           }`}
         >
           <div className="flex items-center justify-between">

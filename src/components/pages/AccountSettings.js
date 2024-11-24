@@ -12,7 +12,7 @@ export default function AccountSettings() {
 
   useEffect(() => {
     axios
-      .get("https://imarketstore-backend.onrender.com/api/users/profile", {
+      .get(`${process.env.REACT_APP_BACKEND_URL}/api/users/profile`, {
         headers: {
           Authorization: `Bearer ${localStorage.getItem("token")}`,
         },

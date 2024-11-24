@@ -5,27 +5,30 @@ const Footer = () => {
   return (
     <footer className="bg-bleu mt-auto w-full text-white py-8">
       <div className="mx-10 lg:mx-20 grid grid-cols-1 md:grid-cols-3 gap-8">
-        <div className="flex flex-col">
-          <h3 className="text-lg font-bold">Navigation</h3>
-          <div className="flex flex-col">
-            <Link to="/" className="hover:text-orange">
-              Accueil
-            </Link>
-            <Link to="/products" className="hover:text-orange">
-              Produits
-            </Link>
-            <Link to="/" className="hover:text-orange">
-              Avis des clients
-            </Link>
-            <Link to="/" className="hover:text-orange">
-              Politique de confidentialité
-            </Link>
-            <Link to="/" className="hover:text-orange">
-              Conditions d'utilisation
-            </Link>
+        <div className="flex flex-col-reverse md:flex-col">
+          <div>
+            <h3 className="text-lg font-bold">Navigation</h3>
+            <div className="flex flex-col">
+              <Link to="/" className="hover:text-orange">
+                Accueil
+              </Link>
+              <Link to="/products" className="hover:text-orange">
+                Produits
+              </Link>
+              <Link to="/" className="hover:text-orange">
+                Avis des clients
+              </Link>
+              <Link to="/" className="hover:text-orange">
+                Politique de confidentialité
+              </Link>
+              <Link to="/" className="hover:text-orange">
+                Conditions d'utilisation
+              </Link>
+            </div>
           </div>
+
           <Link
-            className="flex flex-row gap-4 items-center text-2xl font-bold text-white mt-10"
+            className="flex flex-row gap-4 items-center text-2xl font-bold text-white mb-5 md:mt-10"
             to="/"
           >
             <img src="/img/logo-white.png" alt="logo" className="w-14" />
@@ -48,7 +51,7 @@ const Footer = () => {
               Notre mission
             </Link>
           </div>
-          <div className="flex flex-row items-center gap-5 mt-auto">
+          <div className="flex flex-row items-center gap-5 mt-5 md:mt-auto">
             <Link
               to="https://instagram.com"
               className="bg-[#efefef] pb-1 p-3 rounded-full text-orange text-3xl"

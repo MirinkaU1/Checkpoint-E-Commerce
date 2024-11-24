@@ -66,14 +66,14 @@ const ProductList = ({ products = [], searchTerm }) => {
                 className="w-auto h-32 md:h-48 object-contain"
               />
             </div>
-            <h3 className="text-lg md:text-xl font-bold">{product.name}</h3>
-            <p className="text-lg md:text-2xl font-bold mt-auto mb-4 pt-4">
+            <h3 className="text-base md:text-xl truncate">{product.name}</h3>
+            <p className="text-base md:text-xl mt-auto mb-4 pt-4">
               À partir de {getLowestPrice(product).toLocaleString("fr-FR")} FCFA
             </p>
             <div className="mt-auto">
               <button
                 onClick={() => handleBuyNowClick(product._id)}
-                className="bg-orange text-sm md:text-xl text-white px-4 py-2 w-full rounded-xl hover:bg-orange-600"
+                className="bg-orange text-sm md:text-xl text-white px-4 py-2 w-full rounded-lg hover:bg-orange-600"
               >
                 Acheter
               </button>

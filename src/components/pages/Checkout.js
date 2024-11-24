@@ -29,15 +29,12 @@ const Checkout = () => {
     return actions.order.capture().then(async (details) => {
       // Enregistrer la commande dans la base de données
       try {
-        await axios.post(
-          `https://imarketstore-backend.onrender.com/api/orders`,
-          {
-            orderItems: cartItems,
-            totalPrice: details.purchase_units[0].amount.value,
-            payerID: details.payer.payer_id,
-            paymentID: details.id,
-          }
-        );
+        await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/orders`, {
+          orderItems: cartItems,
+          totalPrice: details.purchase_units[0].amount.value,
+          payerID: details.payer.payer_id,
+          paymentID: details.id,
+        });
         // Vider le panier
         localStorage.removeItem("cart");
         // Rediriger vers la page de succès

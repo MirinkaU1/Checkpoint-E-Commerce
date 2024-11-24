@@ -1,11 +1,14 @@
+// Admin.js
+
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { jwtDecode } from "jwt-decode";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+import ProductCard from "../admin/ProductCard";
+import OrdersTab from "../admin/OrdersTab";
+import UsersTab from "../admin/UsersTab";
 
 const Admin = () => {
+  const [activeTab, setActiveTab] = useState("products");
   const [products, setProducts] = useState([]);
   const [productForm, setProductForm] = useState({
     name: "",
@@ -14,7 +17,7 @@ const Admin = () => {
     basePrice: "",
     stock: "Available",
     memoryOptions: [{ size: "", price: "" }],
-    colors: [{ name: "", code: "", images: [] }],
+    colors: [{ name: "", code: "", image: [] }],
     promotion: {
       isActive: false,
       discountPercentage: 0,
@@ -27,13 +30,11 @@ const Admin = () => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
-      navigate("/login-admin");
+      navigate("/login");
     } else {
-      const decoded = jwtDecode(token);
-      if (!decoded.isAdmin) {
+      const isAdmin = localStorage.getItem("isAdmin");
+      if (isAdmin !== "true") {
         navigate("/");
-      } else {
-        fetchProducts();
       }
     }
   }, [navigate]);
@@ -44,13 +45,23 @@ const Admin = () => {
   }, []);
 
   const fetchProducts = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.error("Token non disponible. Veuillez vous connecter.");
+      return;
+    }
     try {
-      const response = await axios.get(
-        `https://imarketstore-backend.onrender.com/api/products`
+      const res = await axios.get(
+        `${process.env.REACT_APP_BACKEND_URL}/api/products`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
-      setProducts(response.data);
+      setProducts(res.data);
     } catch (error) {
-      console.error("Erreur lors de la récupération des produits", error);
+      console.error("Erreur lors de la récupération des produits :", error);
     }
   };
 
@@ -98,7 +109,7 @@ const Admin = () => {
   const handleAddColor = () => {
     setProductForm({
       ...productForm,
-      colors: [...productForm.colors, { name: "", code: "", images: [] }],
+      colors: [...productForm.colors, { name: "", code: "", image: [] }],
     });
   };
 
@@ -107,28 +118,42 @@ const Admin = () => {
     setProductForm({ ...productForm, colors: updatedColors });
   };
 
-  // Télécharger une image pour une couleur spécifique
+  // Télécharger des images pour une couleur spécifique
   const handleImageUpload = async (e, colorIndex) => {
-    const file = e.target.files[0];
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", "ml_default"); // Remplacez par votre upload preset Cloudinary
+    const files = Array.from(e.target.files);
+    const uploadedImages = [];
 
-    try {
-      const res = await axios.post(
-        "https://api.cloudinary.com/v1_1/dd0dab4zq/image/upload", // Remplacez par votre URL Cloudinary
-        formData
-      );
+    for (const file of files) {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append(
+        "upload_preset",
+        process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET
+      ); // Utilisation de la variable d'environnement
 
-      if (colorIndex >= 0 && colorIndex < productForm.colors.length) {
-        const updatedColors = [...productForm.colors];
-        updatedColors[colorIndex].image.push(res.data.secure_url);
-        setProductForm({ ...productForm, colors: updatedColors });
-      } else {
-        console.error("Invalid color index:", colorIndex);
+      try {
+        const res = await axios.post(
+          process.env.REACT_APP_CLOUDINARY_UPLOAD_URL, // Utilisation de la variable d'environnement
+          formData
+        );
+        uploadedImages.push(res.data.secure_url);
+      } catch (error) {
+        console.error("Erreur lors de l'importation de l'image", error);
       }
-    } catch (error) {
-      console.error("Erreur lors de l'importation de l'image", error);
+    }
+
+    if (colorIndex >= 0 && colorIndex < productForm.colors.length) {
+      const updatedColors = [...productForm.colors];
+      if (!updatedColors[colorIndex].image) {
+        updatedColors[colorIndex].image = [];
+      }
+      updatedColors[colorIndex].image = [
+        ...updatedColors[colorIndex].image,
+        ...uploadedImages,
+      ];
+      setProductForm({ ...productForm, colors: updatedColors });
+    } else {
+      console.error("Invalid color index:", colorIndex);
     }
   };
 
@@ -137,11 +162,14 @@ const Admin = () => {
     const file = e.target.files[0];
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("upload_preset", "ml_default"); // Remplacez par votre upload preset Cloudinary
+    formData.append(
+      "upload_preset",
+      process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET
+    ); // Utilisation de la variable d'environnement
 
     try {
       const res = await axios.post(
-        "https://api.cloudinary.com/v1_1/dd0dab4zq/image/upload",
+        process.env.REACT_APP_CLOUDINARY_UPLOAD_URL, // Utilisation de la variable d'environnement
         formData
       );
       setProductForm({ ...productForm, image: res.data.secure_url });
@@ -159,7 +187,7 @@ const Admin = () => {
     try {
       if (editingProductId) {
         await axios.put(
-          `https://imarketstore-backend.onrender.com/api/products/${editingProductId}`,
+          `${process.env.REACT_APP_BACKEND_URL}/api/products/${editingProductId}`, // Utilisation de la variable d'environnement
           productForm,
           {
             headers: {
@@ -169,7 +197,7 @@ const Admin = () => {
         );
       } else {
         await axios.post(
-          "https://imarketstore-backend.onrender.com/api/products",
+          `${process.env.REACT_APP_BACKEND_URL}/api/products`, // Utilisation de la variable d'environnement
           productForm,
           {
             headers: {
@@ -195,15 +223,20 @@ const Admin = () => {
 
   const handleDeleteProduct = async (productId) => {
     const token = localStorage.getItem("token");
+    if (!token) {
+      console.error("Token non disponible. Veuillez vous connecter.");
+      return;
+    }
     try {
       await axios.delete(
-        `https://imarketstore-backend.onrender.com/api/products/${productId}`,
+        `${process.env.REACT_APP_BACKEND_URL}/api/products/${productId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         }
       );
+      // Rafraîchir la liste des produits
       fetchProducts();
     } catch (error) {
       console.error("Erreur lors de la suppression du produit", error);
@@ -218,7 +251,7 @@ const Admin = () => {
       basePrice: "",
       stock: "Available",
       memoryOptions: [{ size: "", price: "" }],
-      colors: [{ name: "", code: "", images: [] }],
+      colors: [{ name: "", code: "", image: [] }],
       promotion: {
         isActive: false,
         discountPercentage: 0,
@@ -227,263 +260,134 @@ const Admin = () => {
     setEditingProductId(null);
   };
 
-  const getExcerpt = (htmlString, wordLimit) => {
-    const div = document.createElement("div");
-    div.innerHTML = htmlString;
-    const text = div.textContent || div.innerText || "";
-    const words = text.split(" ").slice(0, wordLimit).join(" ");
-    return words + (text.split(" ").length > wordLimit ? "..." : "");
-  };
-
   return (
-    <div className="container mx-auto pt-20 p-4">
+    <div className="px-20 pt-32 p-4">
       <h1 className="text-3xl font-bold mb-4">
-        Page d'administration des produits
+        Tableau de bord d'administration
       </h1>
 
-      <div className="mb-4">
-        <h2 className="text-2xl mb-2">Ajouter ou mettre à jour un produit</h2>
-        <form onSubmit={handleFormSubmit} className="bg-gray-100 p-4 rounded">
-          <input
-            type="text"
-            name="name"
-            placeholder="Nom du produit"
-            value={productForm.name}
-            onChange={handleInputChange}
-            required
-            className="block mb-2 p-2 border"
-          />
-          <ReactQuill
-            value={productForm.description}
-            onChange={handleDescriptionChange}
-            className="block mb-2 p-2 border"
-          />
-          <input
-            type="file"
-            onChange={handleMainImageUpload}
-            className="block mb-2 p-2 border"
-          />
-          {productForm.image && (
-            <img
-              src={productForm.image}
-              alt="Image_principale"
-              className="w-32 h-32 object-cover mb-2"
-            />
-          )}
-          <input
-            type="number"
-            name="basePrice"
-            placeholder="Prix de base"
-            value={productForm.basePrice}
-            onChange={handleInputChange}
-            required
-            className="block mb-2 p-2 border"
-          />
-          <select
-            name="stock"
-            value={productForm.stock}
-            onChange={handleInputChange}
-            required
-            className="block mb-2 p-2 border"
-          >
-            <option value="Available">Disponible</option>
-            <option value="Out of Stock">Rupture de stock</option>
-          </select>
-          <div className="promotion-section">
-            <label>
-              <input
-                type="checkbox"
-                checked={productForm.promotion.isActive}
-                onChange={(e) =>
-                  setProductForm((prevForm) => ({
-                    ...prevForm,
-                    promotion: {
-                      ...prevForm.promotion,
-                      isActive: e.target.checked,
-                    },
-                  }))
-                }
-              />
-              Activer la promotion
-            </label>
-            {productForm.promotion.isActive && (
-              <input
-                type="number"
-                placeholder="Pourcentage de remise"
-                value={productForm.promotion.discountPercentage}
-                onChange={(e) =>
-                  setProductForm((prevForm) => ({
-                    ...prevForm,
-                    promotion: {
-                      ...prevForm.promotion,
-                      discountPercentage: e.target.value,
-                    },
-                  }))
-                }
-                min="0"
-                max="100"
-                required
-              />
-            )}
-          </div>
-
-          <h3>Options de mémoire</h3>
-          {productForm.memoryOptions.map((option, index) => (
-            <div key={index} className="memory-option">
-              <input
-                type="text"
-                placeholder="Taille de mémoire (ex: 64GB)"
-                value={option.size}
-                onChange={(e) =>
-                  handleMemoryOptionChange(index, "size", e.target.value)
-                }
-                required
-              />
-              <input
-                type="number"
-                placeholder="Prix"
-                value={option.price}
-                onChange={(e) =>
-                  handleMemoryOptionChange(index, "price", e.target.value)
-                }
-                required
-              />
-              <button
-                type="button"
-                onClick={() => handleRemoveMemoryOption(index)}
-              >
-                Supprimer
-              </button>
-            </div>
-          ))}
-          <button
-            type="button"
-            onClick={handleAddMemoryOption}
-            className="mb-2 bg-blue-500 text-white px-4 py-1 rounded"
-          >
-            Ajouter une option de mémoire
-          </button>
-
-          <h3>Couleurs</h3>
-          {productForm.colors.map((color, index) => (
-            <div key={index} className="mb-2">
-              <div className="flex items-center mb-2">
-                <input
-                  type="text"
-                  placeholder="Nom de la couleur"
-                  value={color.name}
-                  onChange={(e) =>
-                    handleColorChange(index, "name", e.target.value)
-                  }
-                  className="block mb-2 p-2 border flex-grow"
-                />
-                <input
-                  type="text"
-                  placeholder="Code couleur (hex)"
-                  value={color.code}
-                  onChange={(e) =>
-                    handleColorChange(index, "code", e.target.value)
-                  }
-                  className="block mb-2 p-2 border flex-grow"
-                />
-                <button
-                  type="button"
-                  onClick={() => handleRemoveColor(index)}
-                  className="ml-2 bg-red-500 text-white px-2 py-1 rounded"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    class="size-6"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
-                    />
-                  </svg>
-                </button>
-              </div>
-              <input
-                type="file"
-                onChange={(e) => handleImageUpload(e, index)}
-                className="block mb-2 p-2 border"
-              />
-              {color.images &&
-                color.images.map((url, i) => (
-                  <img
-                    key={i}
-                    src={url}
-                    alt={`Couleur ${index}-Image ${i}`}
-                    className="w-16 h-16 object-cover mb-2"
-                  />
-                ))}
-            </div>
-          ))}
-          <button
-            type="button"
-            onClick={handleAddColor}
-            className="mb-4 bg-blue-500 text-white px-4 py-1 rounded"
-          >
-            Ajouter une couleur
-          </button>
-
-          <button
-            type="submit"
-            className="bg-green-500 text-white px-4 py-2 rounded"
-          >
-            {editingProductId
-              ? "Mettre à jour le produit"
-              : "Ajouter le produit"}
-          </button>
-        </form>
+      <div className="tabs flex space-x-4 mb-4">
+        <button
+          onClick={() => setActiveTab("products")}
+          className={`tab px-4 rounded ${
+            activeTab === "products" ? "bg-blue-500 text-white" : "bg-gray-200"
+          }`}
+        >
+          Produits
+        </button>
+        <button
+          onClick={() => setActiveTab("orders")}
+          className={`tab px-4 rounded ${
+            activeTab === "orders" ? "bg-blue-500 text-white" : "bg-gray-200"
+          }`}
+        >
+          Commandes
+        </button>
+        <button
+          onClick={() => setActiveTab("users")}
+          className={`tab px-4 rounded ${
+            activeTab === "users" ? "bg-blue-500 text-white" : "bg-gray-200"
+          }`}
+        >
+          Utilisateurs
+        </button>
       </div>
 
-      <div>
-        <h2 className="text-2xl mb-2">Liste des produits</h2>
-        <table className="w-full bg-white border border-gray-200">
-          <thead>
-            <tr>
-              <th className="p-2 border">Nom</th>
-              <th className="p-2 border">Description</th>
-              <th className="p-2 border">Prix</th>
-              <th className="p-2 border">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {products.map((product) => (
-              <tr key={product._id}>
-                <td className="p-2 border">{product.name}</td>
-                <td className="p-2 border">
-                  {getExcerpt(product.description, 20)}
-                </td>
-                <td className="p-2 border">{product.basePrice} FCFA</td>
-                <td className="p-2 border">
+      {/* Contenu des onglets */}
+      {activeTab === "products" && (
+        <div className="lg:flex lg:gap-5">
+          {/* Formulaire d'ajout / modification de produit */}
+          <form
+            onSubmit={handleFormSubmit}
+            className="bg-gray-100 p-4 rounded mb-4"
+          >
+            {/* Champs du formulaire */}
+            <div className="mb-4">
+              <label htmlFor="name" className="block font-bold mb-2">
+                Nom du produit
+              </label>
+              <input
+                type="text"
+                name="name"
+                id="name"
+                value={productForm.name}
+                onChange={handleInputChange}
+                className="w-full p-2 border rounded"
+              />
+            </div>
+
+            {/* Autres champs, comme la description, le prix, etc. */}
+            <div className="mb-4">
+              <label htmlFor="description" className="block font-bold mb-2">
+                Description
+              </label>
+              <textarea
+                name="description"
+                id="description"
+                value={productForm.description}
+                onChange={(e) => handleDescriptionChange(e.target.value)}
+                className="w-full p-2 border rounded"
+              ></textarea>
+            </div>
+
+            <div className="mb-4">
+              <label htmlFor="basePrice" className="block font-bold mb-2">
+                Prix de départ
+              </label>
+              <input
+                type="number"
+                name="basePrice"
+                id="basePrice"
+                value={productForm.basePrice}
+                onChange={handleInputChange}
+                className="w-full p-2 border rounded"
+              />
+            </div>
+
+            {/* Gestion de l'image principale */}
+            <div className="mb-4">
+              <label className="block font-bold mb-2">Image principale</label>
+              <input
+                type="file"
+                onChange={handleMainImageUpload}
+                className="w-full"
+              />
+              {productForm.image && (
+                <img
+                  src={productForm.image}
+                  alt="Aperçu"
+                  className="w-32 h-32 object-cover mt-2"
+                />
+              )}
+            </div>
+
+            {/* Options de mémoire */}
+            <div className="mb-4">
+              <label className="block font-bold mb-2">Options de mémoire</label>
+              {productForm.memoryOptions.map((option, index) => (
+                <div key={index} className="flex items-center mb-2">
+                  <input
+                    type="text"
+                    placeholder="Taille"
+                    value={option.size}
+                    onChange={(e) =>
+                      handleMemoryOptionChange(index, "size", e.target.value)
+                    }
+                    className="p-2 border rounded mr-2"
+                  />
+                  <input
+                    type="number"
+                    placeholder="Prix"
+                    value={option.price}
+                    onChange={(e) =>
+                      handleMemoryOptionChange(index, "price", e.target.value)
+                    }
+                    className="p-2 border rounded mr-2"
+                  />
                   <button
-                    onClick={() => handleEditProduct(product)}
-                    className="bg-yellow-500 text-white px-2 py-1 mr-2 rounded"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke-width="1.5"
-                      stroke="currentColor"
-                      class="size-6"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"
-                      />
-                    </svg>
-                  </button>
-                  <button
-                    onClick={() => handleDeleteProduct(product._id)}
-                    className="bg-red-500 text-white px-2 py-1 rounded"
+                    type="button"
+                    onClick={() => handleRemoveMemoryOption(index)}
+                    className="bg-red-600 text-white p-2 rounded"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -500,12 +404,131 @@ const Admin = () => {
                       />
                     </svg>
                   </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+                </div>
+              ))}
+              <button
+                type="button"
+                onClick={handleAddMemoryOption}
+                className="bg-blue-500 text-white px-4 py-2 rounded"
+              >
+                Ajouter une option
+              </button>
+            </div>
+
+            {/* Couleurs */}
+            <div className="mb-4">
+              <label className="block font-bold mb-2">Couleurs</label>
+              {productForm.colors.map((color, index) => (
+                <div key={index} className="border p-4 mb-2">
+                  <div className="flex items-center mb-2">
+                    <input
+                      type="text"
+                      placeholder="Nom de la couleur"
+                      value={color.name}
+                      onChange={(e) =>
+                        handleColorChange(index, "name", e.target.value)
+                      }
+                      className="p-2 border rounded mr-2"
+                    />
+                    <input
+                      type="text"
+                      placeholder="Code HEX"
+                      value={color.code}
+                      onChange={(e) =>
+                        handleColorChange(index, "code", e.target.value)
+                      }
+                      className="p-2 border rounded mr-2"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => handleRemoveColor(index)}
+                      className="bg-red-600 text-white p-2 rounded"
+                    >
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="1.5"
+                        stroke="currentColor"
+                        class="size-6"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          d="m14.74 9-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 0 1-2.244 2.077H8.084a2.25 2.25 0 0 1-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 0 0-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 0 1 3.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 0 0-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 0 0-7.5 0"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                  {/* Télécharger les images pour cette couleur */}
+                  <div className="mb-2">
+                    <label className="block font-bold mb-2">
+                      Images de la couleur
+                    </label>
+                    <input
+                      type="file"
+                      multiple
+                      onChange={(e) => handleImageUpload(e, index)}
+                      className="w-full"
+                    />
+                    <div className="flex flex-wrap mt-2">
+                      {color.image &&
+                        color.image.map((imageUrl, idx) => (
+                          <img
+                            key={idx}
+                            src={imageUrl}
+                            alt={`Couleur ${color.name}`}
+                            className="w-16 h-16 object-cover mr-2 mb-2"
+                          />
+                        ))}
+                    </div>
+                  </div>
+                </div>
+              ))}
+              <button
+                type="button"
+                onClick={handleAddColor}
+                className="bg-blue-500 text-white px-4 py-2 rounded"
+              >
+                Ajouter une couleur
+              </button>
+            </div>
+
+            {/* Bouton de soumission */}
+            <button
+              type="submit"
+              className="bg-green-500 text-white px-4 py-2 rounded"
+            >
+              {editingProductId
+                ? "Mettre à jour le produit"
+                : "Ajouter le produit"}
+            </button>
+          </form>
+
+          {/* Affichage des produits sous forme de cartes */}
+          {products && products.length > 0 ? (
+            <div className="lg:sticky lg:top-0 flex flex-col">
+              <h2 className="font-semibold text-xl mb-3">Liste des produits</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4">
+                {products.map((product) => (
+                  <ProductCard
+                    key={product._id}
+                    product={product}
+                    onEdit={handleEditProduct}
+                    onDelete={handleDeleteProduct}
+                  />
+                ))}
+              </div>
+            </div>
+          ) : (
+            <p>Aucun produit disponible.</p>
+          )}
+        </div>
+      )}
+
+      {activeTab === "orders" && <OrdersTab />}
+
+      {activeTab === "users" && <UsersTab />}
     </div>
   );
 };

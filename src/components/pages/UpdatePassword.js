@@ -20,7 +20,7 @@ export default function ResetPassword() {
 
     try {
       await axios.put(
-        "https://imarketstore-backend.onrender.com/api/users/update-password",
+        `${process.env.REACT_APP_BACKEND_URL}/api/users/update-password`,
         { oldPassword, newPassword },
         {
           headers: {

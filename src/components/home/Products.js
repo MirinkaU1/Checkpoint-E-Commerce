@@ -30,7 +30,7 @@ const Products = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          `https://imarketstore-backend.onrender.com/api/products`,
+          `${process.env.REACT_APP_BACKEND_URL}/api/products`,
           {
             headers: {
               "Content-Type": "application/json", // En-tête Content-Type si nécessaire
@@ -38,7 +38,11 @@ const Products = () => {
             withCredentials: true, // Si le backend utilise les cookies pour la session/authentification
           }
         );
-        setProducts(response.data);
+        const sortedProducts = response.data.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
+        const latestProducts = sortedProducts.slice(0, 4);
+        setProducts(latestProducts);
       } catch (error) {
         console.error("Erreur lors du chargement des produits:", error);
       }
@@ -54,11 +58,11 @@ const Products = () => {
 
   return (
     <section className="bg-bleu w-full py-12">
-      <div className="mx-10 lg:mx-20">
-        <h2 className="text-2xl text-white font-bold mb-2">
+      <div className="mx-10 lg:mx-20 mb-6">
+        <h2 className="text-2xl text-white font-bold">
           Découvrez les nouveaux iPhones avec des offres exclusives
         </h2>
-        <p className="text-white mb-6">
+        <p className="text-white hidden md:block">
           Passez à la dernière technologie à des prix imbattables. Choisissez
           votre modèle préféré et profitez des meilleures fonctionnalités
           qu'Apple a à offrir
@@ -78,10 +82,12 @@ const Products = () => {
                   className="w-auto h-32 md:h-48 object-contain"
                 />
               </div>
-              <h3 className="text-lg md:text-xl font-bold">{product.name}</h3>
-              <p className="text-lg md:text-2xl font-bold mb-4 pt-4">
-                À partir de {getLowestPrice(product).toLocaleString("fr-FR")}{" "}
-                FCFA
+              <h3 className="text-base md:text-xl truncate">{product.name}</h3>
+              <p className="text-base md:text-xl mb-4 pt-4">
+                À partir de{" "}
+                <span>
+                  {getLowestPrice(product).toLocaleString("fr-FR")} FCFA
+                </span>
               </p>
               <div className="mt-auto">
                 <button

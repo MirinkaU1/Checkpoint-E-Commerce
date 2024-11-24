@@ -12,7 +12,7 @@ export default function ForgotPassword() {
     e.preventDefault();
     try {
       await axios.post(
-        `https://imarketstore-backend.onrender.com/api/users/forgot-password`,
+        `${process.env.REACT_APP_BACKEND_URL}/api/users/forgot-password`,
         { email },
         {
           headers: {
