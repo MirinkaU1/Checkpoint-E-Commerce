@@ -8,13 +8,13 @@ const Banner = () => {
     <section className="banner-section relative flex flex-col w-full h-lvh pt-20 lg:h-dvh justify-center">
       {/* <Navbar /> */}
       <div className="mx-10 lg:mx-20 mt-32 lg:mt-0 flex flex-col lg:flex-row items-center">
-        <div className="text-center lg:text-left lg:w-1/2 space-y-4">
+        <div className="flex flex-col items-center text-center lg:items-start lg:text-left lg:w-1/2 space-y-4">
           <h1 className="text-3xl md:text-4xl font-bold text-bleu">
             Trouvez votre <span className="text-orange">iPhone parfait</span>
             <br />
             Des offres imbattables vous attendent.
           </h1>
-          <Link to="/products">
+          <Link to="/products" className="text-center">
             <button class="flex justify-center gap-2 items-center mt-4 shadow-xl text-lg text-bleu bg-gray-50 backdrop-blur-md lg:font-semibold isolation-auto border-gray-50 before:absolute before:w-full before:transition-all before:duration-700 before:hover:w-full before:-left-full before:hover:left-0 before:rounded-full before:bg-orange hover:text-gray-50 before:-z-10 before:aspect-square before:hover:scale-150 before:hover:duration-700 relative z-10 px-4 py-2 overflow-hidden border-2 rounded-full group">
               Découvrir
               <svg
