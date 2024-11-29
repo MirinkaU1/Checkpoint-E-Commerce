@@ -159,7 +159,7 @@ export default function Navbar() {
                           onClick={handleLogout}
                           className={`${
                             active ? "bg-gray-100" : ""
-                          } flex justify-between w-full px-4 py-2 text-base text-gray-700`}
+                          } menu__link flex justify-between w-full px-4 py-2 text-base text-gray-700`}
                         >
                           Déconnexion
                         </button>
@@ -171,10 +171,13 @@ export default function Navbar() {
             </Menu>
           ) : (
             <>
-              <Link to="/login" className="text-base text-gray-700">
+              <Link to="/login" className="menu__link text-base text-gray-700">
                 Connexion
               </Link>
-              <Link to="/register" className="text-base text-gray-700">
+              <Link
+                to="/register"
+                className="menu__link text-base text-gray-700"
+              >
                 Inscription
               </Link>
             </>

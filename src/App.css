@@ -117,7 +117,7 @@
 }
 
 .menu__link {
-  color: #fff;
+  color: black;
   line-height: 2;
   position: relative;
 }
@@ -127,7 +127,7 @@
   width: 0;
   height: 2px;
   border-radius: 2px;
-  background-color: #fff;
+  background-color: black;
   position: absolute;
   bottom: -0.25rem;
   right: 0;
