@@ -7,32 +7,30 @@ import {
   Navigate,
 } from "react-router-dom";
 import "./App.css";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
-import Loading from "./components/Loading";
-import { CartProvider } from "./components/context/CartContext";
+import Navbar from "./pages/Navbar";
+import Footer from "./pages/Footer";
+import Loading from "./pages/Loading";
+import { CartProvider } from "./context/CartContext";
 
 // Importation paresseuse des composants de page
-const Home = lazy(() => import("./components/pages/Home"));
-const About = lazy(() => import("./components/pages/About"));
-const Login = lazy(() => import("./components/pages/Login"));
-const Register = lazy(() => import("./components/pages/Register"));
-const Products = lazy(() => import("./components/pages/Products"));
-const ProductDetails = lazy(() => import("./components/pages/ProductDetails"));
-const Admin = lazy(() => import("./components/pages/Admin"));
-const LoginAdmin = lazy(() => import("./components/pages/LoginAdmin"));
-const Cart = lazy(() => import("./components/pages/Cart"));
-const NotFound = lazy(() => import("./components/pages/NotFound"));
-const Checkout = lazy(() => import("./components/pages/Checkout"));
-const Success = lazy(() => import("./components/pages/Success"));
-const AccountSettings = lazy(() =>
-  import("./components/pages/AccountSettings")
-);
-const UpdatePassword = lazy(() => import("./components/pages/UpdatePassword"));
-const ResetPassword = lazy(() => import("./components/pages/ResetPassword"));
-const OrderHistory = lazy(() => import("./components/pages/OrderHistory"));
-const ForgotPassword = lazy(() => import("./components/pages/ForgotPassword"));
-const VerifyCode = lazy(() => import("./components/pages/VerifyCode"));
+const Home = lazy(() => import("./pages/pages/Home"));
+const About = lazy(() => import("./pages/pages/About"));
+const Login = lazy(() => import("./pages/pages/Login"));
+const Register = lazy(() => import("./pages/pages/Register"));
+const Products = lazy(() => import("./pages/pages/Products"));
+const ProductDetails = lazy(() => import("./pages/pages/ProductDetails"));
+const Admin = lazy(() => import("./pages/pages/Admin"));
+const LoginAdmin = lazy(() => import("./pages/pages/LoginAdmin"));
+const Cart = lazy(() => import("./pages/pages/Cart"));
+const NotFound = lazy(() => import("./pages/pages/NotFound"));
+const Checkout = lazy(() => import("./pages/pages/Checkout"));
+const Success = lazy(() => import("./pages/pages/Success"));
+const AccountSettings = lazy(() => import("./pages/pages/AccountSettings"));
+const UpdatePassword = lazy(() => import("./pages/pages/UpdatePassword"));
+const ResetPassword = lazy(() => import("./pages/pages/ResetPassword"));
+const OrderHistory = lazy(() => import("./pages/pages/OrderHistory"));
+const ForgotPassword = lazy(() => import("./pages/pages/ForgotPassword"));
+const VerifyCode = lazy(() => import("./pages/pages/VerifyCode"));
 
 function App() {
   return (

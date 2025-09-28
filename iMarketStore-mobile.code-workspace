@@ -1,0 +1,13 @@
+{
+  "folders": [
+	{
+		"path": "../iMarketStore-mobile"
+	},
+	{
+		"path": "."
+	}
+],
+  "settings": {
+    "powershell.cwd": "iMarketStore"
+  }
+}

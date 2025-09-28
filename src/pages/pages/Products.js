@@ -34,7 +34,7 @@ const Products = () => {
 
   return (
     <section className="relative flex flex-col w-full">
-      <div className="bg-blue-600 text-white flex gap-2 items-center justify-around px-3 mt-20">
+      <div className="bg-blue-600 text-white flex gap-2 items-center justify-around px-3">
         <button
           onClick={() => navigate(-1)}
           className="px-4 py-2 text-white flex items-center"

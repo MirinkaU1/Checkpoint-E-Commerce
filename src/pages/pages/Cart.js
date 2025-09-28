@@ -1,16 +1,45 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom";
-import { CartContext } from "../context/CartContext";
+import { useNavigate, Link } from "react-router-dom";
+import { CartContext } from "../../context/CartContext";
+import { Button } from "../../components/ui/button";
 import axios from "axios";
+import { ChevronLeft, Minus, Plus, Trash } from "lucide-react";
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
+  const [relatedProducts, setRelatedProducts] = useState([]);
   const navigate = useNavigate();
   const { updateCartItemsCount } = useContext(CartContext);
 
   useEffect(() => {
     const items = JSON.parse(localStorage.getItem("cart")) || [];
     setCartItems(items);
+  }, []);
+
+  // Fetch related products to show similar items
+  useEffect(() => {
+    const fetchRelated = async () => {
+      try {
+        const res = await axios.get(
+          `${process.env.REACT_APP_BACKEND_URL}/api/products`
+        );
+        if (res.data && Array.isArray(res.data)) {
+          // Exclude products already in cart
+          const cartIds = (JSON.parse(localStorage.getItem("cart")) || []).map(
+            (i) => i.productId
+          );
+          const items = res.data.filter((p) => !cartIds.includes(p._id));
+          setRelatedProducts(items.slice(0, 6));
+        }
+      } catch (err) {
+        console.error(
+          "Erreur lors du chargement des produits similaires:",
+          err
+        );
+      }
+    };
+
+    fetchRelated();
   }, []);
 
   const updateQuantity = (index, quantity) => {
@@ -104,49 +133,38 @@ const Cart = () => {
   return (
     <>
       {cartItems.length === 0 ? (
-        <div className="flex flex-col text-center items-center justify-center h-screen">
+        <div className="flex flex-col text-center items-center justify-center -mt-20 h-screen">
           <h1 className="text-4xl font-bold mb-4">Votre panier est vide.</h1>
-          <button
+          <Button
             onClick={() => navigate(-1)}
-            className="flex items-center gap-4 mt-5 hover:underline"
+            variant="link"
+            className="flex items-center gap-4 mt-5 group"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="size-6"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M15.75 19.5 8.25 12l7.5-7.5"
-              />
-            </svg>
+            <ChevronLeft className="size-5 transform transition-transform duration-200 ease-out group-hover:-translate-x-1" />
             <span>Retour</span>
-          </button>
+          </Button>
         </div>
       ) : (
-        <div className="container mx-auto p-4 py-20 md:pb-40">
+        <div className="container mx-auto px-10 pt-4 pb-20 md:pb-40">
           <div className="flex items-center gap-5 mb-6">
-            <button
+            <Button
               onClick={() => navigate(-1)}
-              className="px-4 py-2 text-bleu flex items-center"
+              variant="ghost"
+              className="px-4 py-2 text-bleu flex items-center group"
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 24 24"
                 fill="currentColor"
-                class="size-6"
+                className="size-6 transform transition-transform duration-200 ease-out group-hover:-translate-x-1"
               >
                 <path
-                  fill-rule="evenodd"
+                  fillRule="evenodd"
                   d="M7.72 12.53a.75.75 0 0 1 0-1.06l7.5-7.5a.75.75 0 1 1 1.06 1.06L9.31 12l6.97 6.97a.75.75 0 1 1-1.06 1.06l-7.5-7.5Z"
-                  clip-rule="evenodd"
+                  clipRule="evenodd"
                 />
               </svg>
-            </button>
+            </Button>
             <h1 className="text-3xl font-bold">Votre Panier</h1>
           </div>
           <ul>
@@ -172,68 +190,37 @@ const Cart = () => {
                 </div>
                 <div className="flex flex-col gap-5">
                   <div className="flex justify-end">
-                    <button
+                    <Button
                       onClick={() => removeFromCart(index)}
-                      className="p-2 bg-red-500 text-white rounded"
+                      className="p-2 bg-red-500 hover:bg-red-600 text-white rounded"
+                      variant="destructive"
+                      size="icon"
                     >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        viewBox="0 0 24 24"
-                        fill="currentColor"
-                        class="size-5"
-                      >
-                        <path
-                          fill-rule="evenodd"
-                          d="M16.5 4.478v.227a48.816 48.816 0 0 1 3.878.512.75.75 0 1 1-.256 1.478l-.209-.035-1.005 13.07a3 3 0 0 1-2.991 2.77H8.084a3 3 0 0 1-2.991-2.77L4.087 6.66l-.209.035a.75.75 0 0 1-.256-1.478A48.567 48.567 0 0 1 7.5 4.705v-.227c0-1.564 1.213-2.9 2.816-2.951a52.662 52.662 0 0 1 3.369 0c1.603.051 2.815 1.387 2.815 2.951Zm-6.136-1.452a51.196 51.196 0 0 1 3.273 0C14.39 3.05 15 3.684 15 4.478v.113a49.488 49.488 0 0 0-6 0v-.113c0-.794.609-1.428 1.364-1.452Zm-.355 5.945a.75.75 0 1 0-1.5.058l.347 9a.75.75 0 1 0 1.499-.058l-.346-9Zm5.48.058a.75.75 0 1 0-1.498-.058l-.347 9a.75.75 0 0 0 1.5.058l.345-9Z"
-                          clip-rule="evenodd"
-                        />
-                      </svg>
-                    </button>
+                      <Trash className="size-5" />
+                    </Button>
                   </div>
 
                   <div className="flex items-center">
-                    <button
+                    <Button
                       type="button"
                       onClick={() =>
                         updateQuantity(index, Math.max(1, item.quantity - 1))
                       }
-                      className="favorite-btn p-1 text-white bg-bleu rounded-md"
+                      className="favorite-btn p-1 text-white bg-bleu hover:bg-blue-800 rounded-md"
+                      variant="secondary"
+                      size="icon"
                     >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        class="size-6"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="M5 12h14"
-                        />
-                      </svg>
-                    </button>
+                      <Minus className="size-5" />
+                    </Button>
                     <span className="px-3">{item.quantity}</span>
-                    <button
+                    <Button
                       onClick={() => updateQuantity(index, item.quantity + 1)}
-                      className="favorite-btn p-1 text-white bg-bleu rounded-md transition duration-300 ease-in-out"
+                      className="favorite-btn p-1 text-white bg-bleu hover:bg-blue-800"
+                      variant="secondary"
+                      size="icon"
                     >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        class="size-6"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="M12 4.5v15m7.5-7.5h-15"
-                        />
-                      </svg>
-                    </button>
+                      <Plus className="size-5" />
+                    </Button>
                   </div>
                 </div>
               </li>
@@ -246,13 +233,70 @@ const Cart = () => {
               </p>
             </div>
             <div className="flex justify-end mt-4">
-              <button
+              <Button
                 onClick={handleCheckout}
                 className="px-6 py-3 bg-green-500 text-white rounded"
+                variant="default"
               >
                 Valider la commande
-              </button>
+              </Button>
             </div>
+          </div>
+          {/* Produits similares */}
+          <div className="mt-8">
+            <h2 className="text-xl font-semibold mb-4">Produits similaires</h2>
+            {relatedProducts.length === 0 ? (
+              <p className="text-sm text-gray-500">
+                Aucun produit similaire trouvé.
+              </p>
+            ) : (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {relatedProducts.map((p) => (
+                  <Link key={p._id} to={`/products/${p._id}`} className="block">
+                    <div className="flex items-center gap-4 p-3 border rounded-lg bg-white hover:shadow-md transition">
+                      <div className="w-20 h-20 flex-shrink-0 bg-gray-100 rounded-md overflow-hidden flex items-center justify-center">
+                        {p.colors &&
+                        p.colors[0] &&
+                        p.colors[0].image &&
+                        p.colors[0].image[0] ? (
+                          <img
+                            src={p.colors[0].image[0]}
+                            alt={p.name}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <span className="text-xs text-gray-400">
+                            Pas d'image
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex-1">
+                        <div className="font-medium text-sm text-gray-800 truncate">
+                          {p.name}
+                        </div>
+                        <div className="text-sm font-bold text-gray-600">
+                          {(p.basePrice || p.price || 0).toLocaleString(
+                            "fr-FR"
+                          )}{" "}
+                          FCFA
+                        </div>
+                        <div
+                          className={`text-xs mt-1 ${
+                            p.stock === "Available"
+                              ? "text-green-600"
+                              : "text-red-500"
+                          }`}
+                        >
+                          {p.stock === "Available"
+                            ? "Disponible"
+                            : "Stock épuisé"}
+                        </div>
+                      </div>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       )}

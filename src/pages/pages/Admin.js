@@ -1,11 +1,9 @@
-// Admin.js
-
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import ProductCard from "../admin/ProductCard";
-import OrdersTab from "../admin/OrdersTab";
-import UsersTab from "../admin/UsersTab";
+import ProductCard from "./AdminPage/ProductCard";
+import OrdersTab from "./AdminPage/OrdersTab";
+import UsersTab from "./AdminPage/UsersTab";
 
 const Admin = () => {
   const [activeTab, setActiveTab] = useState("products");
